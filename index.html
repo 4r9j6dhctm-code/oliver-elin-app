@@ -21,7 +21,6 @@
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,7 +28,6 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
@@ -37,7 +35,6 @@
             overflow-x: hidden;
             position: relative;
         }
-
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -47,12 +44,32 @@
             z-index: -1;
             pointer-events: none;
         }
-
+        /* Passcode / Login Overlay Screen */
+        #loginOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(16px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        }
         .app-container {
             display: flex;
             min-height: 100vh;
         }
-
         sidebar {
             width: 260px;
             background: rgba(11, 15, 25, 0.85);
@@ -67,7 +84,6 @@
             z-index: 100;
             transition: var(--transition);
         }
-
         .sidebar-brand {
             padding: 2rem 1.5rem;
             font-size: 1.25rem;
@@ -78,18 +94,25 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            justify-content: space-between;
         }
-
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .logout-btn:hover { color: var(--accent-pink); }
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
             flex: 1;
         }
-
         .nav-item {
             margin-bottom: 0.5rem;
         }
-
         .nav-link {
             display: flex;
             align-items: center;
@@ -101,14 +124,12 @@
             font-weight: 500;
             transition: var(--transition);
         }
-
         .nav-link:hover, .nav-link.active {
             color: var(--text-main);
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             box-shadow: var(--shadow-glow);
         }
-
         .mobile-header {
             display: none;
             position: fixed;
@@ -122,7 +143,6 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .menu-toggle {
             background: none;
             border: none;
@@ -130,7 +150,6 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
-
         main {
             flex: 1;
             margin-left: 260px;
@@ -138,21 +157,17 @@
             max-width: 1200px;
             transition: var(--transition);
         }
-
         .section {
             display: none;
             animation: fadeIn 0.4s ease-in-out forwards;
         }
-
         .section.active {
             display: block;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .glass-card {
             background: var(--card-bg);
             backdrop-filter: blur(16px);
@@ -164,12 +179,10 @@
             position: relative;
             overflow: hidden;
         }
-
         h1, h2, h3 {
             font-weight: 700;
             letter-spacing: -0.025em;
         }
-
         .hero-title {
             font-size: clamp(2rem, 4vw, 3rem);
             background: var(--gradient-primary);
@@ -177,13 +190,11 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
         }
-
         .subtitle {
             color: var(--text-muted);
             font-size: 1.1rem;
             margin-bottom: 2rem;
         }
-
         .btn {
             background: var(--gradient-primary);
             color: white;
@@ -198,24 +209,21 @@
             justify-content: center;
             gap: 0.5rem;
             box-shadow: var(--shadow-glow);
+            width: 100%;
         }
-
         .btn:hover {
             transform: translateY(-2px);
             filter: brightness(1.1);
         }
-
         .btn-secondary {
             background: transparent;
             border: 1px solid var(--card-border);
             box-shadow: none;
         }
-
         .btn-secondary:hover {
             background: var(--card-bg);
             border-color: var(--accent-pink);
         }
-
         input, textarea, select {
             width: 100%;
             background: rgba(255, 255, 255, 0.03);
@@ -228,24 +236,19 @@
             transition: var(--transition);
             margin-bottom: 1rem;
         }
-
         input:focus, textarea:focus, select:focus {
             border-color: var(--accent-pink);
             box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
         }
-
         select option {
             background-color: #0b0f19;
             color: var(--text-main);
         }
-
         .grid-2 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
-
-        /* Countdown Grid */
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -253,7 +256,6 @@
             margin-top: 1.5rem;
             margin-bottom: 1.5rem;
         }
-
         .countdown-box {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--card-border);
@@ -261,7 +263,6 @@
             padding: 1rem;
             text-align: center;
         }
-
         .countdown-num {
             font-size: 2rem;
             font-weight: 700;
@@ -269,7 +270,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .countdown-label {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -277,15 +277,12 @@
             letter-spacing: 0.05em;
             margin-top: 0.25rem;
         }
-
-        /* Photo Gallery Styles */
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 1.25rem;
             margin-top: 1.5rem;
         }
-
         .photo-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--card-border);
@@ -295,30 +292,25 @@
             flex-direction: column;
             transition: var(--transition);
         }
-
         .photo-card:hover {
             border-color: var(--accent-pink);
             transform: translateY(-3px);
         }
-
         .photo-img-wrapper {
             width: 100%;
             height: 180px;
             overflow: hidden;
             background: #000;
         }
-
         .photo-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
         }
-
         .photo-card:hover .photo-img-wrapper img {
             transform: scale(1.05);
         }
-
         .photo-info {
             padding: 1rem;
             display: flex;
@@ -327,21 +319,17 @@
             flex: 1;
             justify-content: space-between;
         }
-
-        /* Calendar Styles */
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 0.5rem;
         }
-
         .calendar-day-name {
             text-align: center;
             font-weight: 600;
@@ -349,7 +337,6 @@
             font-size: 0.85rem;
             padding: 0.5rem 0;
         }
-
         .calendar-cell {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--card-border);
@@ -361,23 +348,19 @@
             gap: 0.25rem;
             transition: var(--transition);
         }
-
         .calendar-cell.empty {
             background: transparent;
             border-color: transparent;
         }
-
         .calendar-cell.active:hover {
             border-color: var(--accent-pink);
             background: rgba(255, 255, 255, 0.04);
         }
-
         .day-number {
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-muted);
         }
-
         .calendar-event-badge {
             font-size: 0.7rem;
             padding: 0.2rem 0.4rem;
@@ -392,40 +375,6 @@
             gap: 4px;
             text-shadow: 0 1px 2px rgba(0,0,0,0.4);
         }
-
-        /* Toast Container */
-        #toast-container {
-            position: fixed;
-            bottom: 2rem; right: 2rem;
-            z-index: 3000;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .toast {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
-        }
-
-        @keyframes toastIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes toastOut {
-            from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(100%); }
-        }
-
         @media (max-width: 768px) {
             sidebar { transform: translateX(-100%); }
             sidebar.open { transform: translateX(0); }
@@ -437,9 +386,27 @@
     </style>
 </head>
 <body>
+    <!-- PASSCODE / PROFILE LOGIN OVERLAY -->
+    <div id="loginOverlay">
+        <!-- Step 1: Select Profile -->
+        <div class="login-card" id="loginStep1">
+            <h2 class="hero-title" style="font-size: 2rem;">Who's logging in?</h2>
+            <p class="subtitle">Select your profile to enter your shared space.</p>
+            <button class="btn" onclick="promptPasscode('Oliver')" style="margin-bottom: 1rem;">Oliver 💙</button>
+            <button class="btn btn-secondary" onclick="promptPasscode('Elin')" style="width: 100%;">Elin 💖</button>
+        </div>
+        <!-- Step 2: Enter/Create PIN Passcode -->
+        <div class="login-card" id="loginStep2" style="display: none;">
+            <h2 class="hero-title" id="passcodeTitle" style="font-size: 2rem;">Enter Passcode</h2>
+            <p class="subtitle" id="passcodeSubtitle">Enter your secret PIN.</p>
+            <input type="password" id="passcodeInput" placeholder="Enter PIN..." style="text-align: center; letter-spacing: 4px; font-size: 1.5rem;">
+            <button class="btn" onclick="verifyAndLogin()" style="margin-bottom: 0.75rem;">Unlock 🔓</button>
+            <button class="btn btn-secondary" onclick="backToProfiles()" style="width: 100%;">Back</button>
+        </div>
+    </div>
 
     <canvas id="bg-canvas"></canvas>
-
+    
     <header class="mobile-header">
         <div style="font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Oliver & Elin ❤️</div>
         <button class="menu-toggle" id="menuToggle">☰</button>
@@ -449,13 +416,18 @@
         <!-- Sidebar Navigation -->
         <sidebar id="sidebar">
             <div class="sidebar-brand">
-                <span>Oliver & Elin</span> ❤️
+                <span>Oliver & Elin</span> 
+                <button class="logout-btn" onclick="logoutUser()">Switch</button>
+            </div>
+            <div style="padding: 0 1.5rem 1rem 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                Logged in as: <strong id="sidebarUserLabel" style="color: var(--accent-pink);">...</strong>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="#" class="nav-link active" data-target="home">🏠 Home Hub</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="notes">💌 Love Notes</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="calendar">📅 Shared Calendar</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="photos">📸 Photo Gallery</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-target="settings">⚙️ Settings</a></li>
             </ul>
         </sidebar>
 
@@ -463,10 +435,17 @@
             <!-- 🏠 HOME HUB SECTION -->
             <section id="home" class="section active">
                 <div class="glass-card">
-                    <h2 class="hero-title">Welcome Home, Oliver & Elin!</h2>
-                    <p class="subtitle">Your shared space for love notes and daily planning.</p>
+                    <h2 class="hero-title" id="welcomeUserTitle">Welcome Home!</h2>
+                    <p class="subtitle">Your shared space for love notes, live distance, and daily planning.</p>
+                    
+                    <!-- Live Distance Tracker Card -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">🌍 Distance Between Us</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;" id="distanceDisplay">Click below to update your location and calculate distance...</p>
+                        <button class="btn btn-secondary" onclick="updateMyLocation()" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem; margin-top: 0.75rem;">Update My Location 📍</button>
+                    </div>
 
-                    <!-- Countdown Card linked to Calendar Milestones -->
+                    <!-- Countdown Card -->
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                             <div>
@@ -474,7 +453,6 @@
                                 <p style="color: var(--text-muted); font-size: 0.9rem;" id="countdownDateDisplay">Looking for upcoming dates & trips...</p>
                             </div>
                         </div>
-
                         <div class="countdown-grid">
                             <div class="countdown-box">
                                 <div class="countdown-num" id="daysNum">00</div>
@@ -536,15 +514,15 @@
                         </div>
                         <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin: 1rem 0 0.5rem 0;">Message</label>
                         <textarea id="noteMessageInput" rows="3" placeholder="Write your sweet message here..." required></textarea>
-                        <button type="submit" class="btn">Save Love Note ❤️</button>
+                        <button type="submit" class="btn" style="width: auto;">Save Love Note ❤️</button>
                     </form>
-
+                    
                     <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                        <button class="btn" id="filterAllBtn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">All Notes</button>
-                        <button class="btn btn-secondary" id="filterOliverBtn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Oliver ➔ Elin</button>
-                        <button class="btn btn-secondary" id="filterElinBtn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Elin ➔ Oliver</button>
+                        <button class="btn" id="filterAllBtn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">All Notes</button>
+                        <button class="btn btn-secondary" id="filterOliverBtn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">Oliver ➔ Elin</button>
+                        <button class="btn btn-secondary" id="filterElinBtn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">Elin ➔ Oliver</button>
                     </div>
-
+                    
                     <div class="grid-2" id="notesContainer"></div>
                 </div>
             </section>
@@ -554,16 +532,12 @@
                 <div class="glass-card">
                     <h2 class="hero-title" style="font-size: 2rem;">Shared Calendar</h2>
                     <p class="subtitle">Plan events, work shifts, or fun hangouts together!</p>
-
-                    <!-- Event Creator Form -->
+                    
                     <form id="eventForm" style="margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
                         <div class="grid-2">
                             <div>
                                 <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Who is adding this?</label>
-                                <select id="eventAuthor">
-                                    <option value="Oliver">Oliver</option>
-                                    <option value="Elin">Elin</option>
-                                </select>
+                                <input type="text" id="eventAuthor" readonly style="background: rgba(255,255,255,0.01); color: var(--accent-pink); font-weight: bold; margin-bottom: 0;">
                             </div>
                             <div>
                                 <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Event Title</label>
@@ -586,17 +560,15 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn" style="margin-top: 1.5rem;">Add Event to Calendar 📅</button>
+                        <button type="submit" class="btn" style="width: auto; margin-top: 1.5rem;">Add Event to Calendar 📅</button>
                     </form>
 
-                    <!-- Month Navigation UI -->
                     <div class="calendar-header">
-                        <button class="btn btn-secondary" id="prevMonthBtn" style="padding: 0.5rem 1rem;">&larr; Prev</button>
+                        <button class="btn btn-secondary" id="prevMonthBtn" style="width: auto; padding: 0.5rem 1rem;">&larr; Prev</button>
                         <h3 id="currentMonthYearLabel" style="font-size: 1.25rem;">Month Year</h3>
-                        <button class="btn btn-secondary" id="nextMonthBtn" style="padding: 0.5rem 1rem;">Next &rarr;</button>
+                        <button class="btn btn-secondary" id="nextMonthBtn" style="width: auto; padding: 0.5rem 1rem;">Next &rarr;</button>
                     </div>
 
-                    <!-- Visual Grid Calendar -->
                     <div class="calendar-grid" id="calendarGridHeader">
                         <div class="calendar-day-name">Sun</div>
                         <div class="calendar-day-name">Mon</div>
@@ -615,13 +587,12 @@
                 <div class="glass-card">
                     <h2 class="hero-title" style="font-size: 2rem;">Photo Gallery</h2>
                     <p class="subtitle">Your shared memory lane organized by folders!</p>
-
-                    <!-- Photo Upload Form -->
+                    
                     <form id="photoForm" style="margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
                         <div class="grid-2">
                             <div>
                                 <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Caption / Title</label>
-                                <input type="text" id="photoTitle" placeholder="e.g., Summer trip 2026" required style="margin-bottom: 0;">
+                                <input type="text" id="photoTitle" placeholder="e.g., Summer trip" required style="margin-bottom: 0;">
                             </div>
                             <div>
                                 <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Folder / Category</label>
@@ -637,29 +608,45 @@
                             <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Select Image File</label>
                             <input type="file" id="photoFile" accept="image/*" required style="background: transparent; border: none; padding: 0;">
                         </div>
-                        <button type="submit" class="btn" id="uploadPhotoBtn" style="margin-top: 1rem;">Upload Photo 📸</button>
+                        <button type="submit" class="btn" id="uploadPhotoBtn" style="width: auto; margin-top: 1rem;">Upload Photo 📸</button>
                     </form>
 
-                    <!-- Folder Filter Buttons -->
                     <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;" id="folderFilterContainer">
-                        <button class="btn" onclick="filterPhotos('all')" id="folderBtn-all" style="padding: 0.5rem 1rem; font-size: 0.9rem;">All Folders</button>
-                        <button class="btn btn-secondary" onclick="filterPhotos('Dates & Romance')" id="folderBtn-Dates & Romance" style="padding: 0.5rem 1rem; font-size: 0.9rem;">💖 Dates</button>
-                        <button class="btn btn-secondary" onclick="filterPhotos('Trips & Adventures')" id="folderBtn-Trips & Adventures" style="padding: 0.5rem 1rem; font-size: 0.9rem;">✈️ Trips</button>
-                        <button class="btn btn-secondary" onclick="filterPhotos('Random & Funny')" id="folderBtn-Random & Funny" style="padding: 0.5rem 1rem; font-size: 0.9rem;">✨ Random</button>
-                        <button class="btn btn-secondary" onclick="filterPhotos('Milestones')" id="folderBtn-Milestones" style="padding: 0.5rem 1rem; font-size: 0.9rem;">🏆 Milestones</button>
+                        <button class="btn" onclick="filterPhotos('all')" id="folderBtn-all" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">All Folders</button>
+                        <button class="btn btn-secondary" onclick="filterPhotos('Dates & Romance')" id="folderBtn-Dates & Romance" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">💖 Dates</button>
+                        <button class="btn btn-secondary" onclick="filterPhotos('Trips & Adventures')" id="folderBtn-Trips & Adventures" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">✈️ Trips</button>
+                        <button class="btn btn-secondary" onclick="filterPhotos('Random & Funny')" id="folderBtn-Random & Funny" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">✨ Random</button>
+                        <button class="btn btn-secondary" onclick="filterPhotos('Milestones')" id="folderBtn-Milestones" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">🏆 Milestones</button>
                     </div>
 
-                    <!-- Photo Display Grid -->
                     <div class="photo-grid" id="photoGridContainer">
                         <p style="color: var(--text-muted);">Loading photos...</p>
                     </div>
                 </div>
             </section>
+
+            <!-- ⚙️ SETTINGS SECTION -->
+            <section id="settings" class="section">
+                <div class="glass-card">
+                    <h2 class="hero-title" style="font-size: 2rem;">Security & Settings</h2>
+                    <p class="subtitle">Manage your profile passcode or switch accounts.</p>
+                    
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; max-width: 500px;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Change Your Passcode</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Update the secret PIN for <strong id="settingsUserLabel" style="color: var(--accent-pink);">...</strong></p>
+                        
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">New Passcode PIN</label>
+                        <input type="password" id="newPasscodeInput" placeholder="Enter new PIN..." style="text-align: center; letter-spacing: 4px; font-size: 1.25rem;">
+                        
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                            <button class="btn" onclick="updatePasscode()" style="width: auto; flex: 1;">Save New PIN 🔒</button>
+                            <button class="btn btn-secondary" onclick="clearPasscode()" style="width: auto; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">Remove PIN 🔓</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
-
-    <!-- Toast Notifications Container -->
-    <div id="toast-container"></div>
 
     <!-- JavaScript Application Script -->
     <script>
@@ -667,8 +654,11 @@
             supabaseUrl: "https://axonvjmekszerkpvzcrd.supabase.co",
             supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4b252am1la3N6ZXJrcHZ6Y3JkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1MzU1MjMsImV4cCI6MjEwNDExMTUyM30.1tR6IWjtP2KxptGMv_yzVAM_apWS942kq1Eyfjzz8aw"
         };
-
         const supabaseClient = supabase.createClient(config.supabaseUrl, config.supabaseKey);
+        
+        let currentUser = localStorage.getItem('currentUser');
+        let selectedTargetUser = '';
+        let isCreatingPasscode = false;
 
         let notes = [];
         let events = [];
@@ -678,46 +668,222 @@
         let calendarNavDate = new Date();
         let nextMilestoneEvent = null;
 
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `<span>❤️</span> <span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 3000);
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
+            if (!currentUser) {
+                document.getElementById('loginOverlay').style.display = 'flex';
+            } else {
+                initAppSession();
+            }
+
             const navLinks = document.querySelectorAll('.nav-link');
             const sections = document.querySelectorAll('.section');
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menuToggle');
-
+            
             menuToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); });
-
+            
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const targetId = link.getAttribute('data-target');
-
                     navLinks.forEach(l => l.classList.remove('active'));
                     link.classList.add('active');
-
                     sections.forEach(sec => {
                         sec.classList.remove('active');
                         if (sec.id === targetId) sec.classList.add('active');
                     });
-
                     if (window.innerWidth <= 768) sidebar.classList.remove('open');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
 
             setInterval(calculateTimeRemaining, 1000);
+        });
+
+        async function promptPasscode(name) {
+            selectedTargetUser = name;
+            document.getElementById('loginStep1').style.display = 'none';
+            document.getElementById('loginStep2').style.display = 'block';
+
+            const { data, error } = await supabaseClient.from('user_profiles').select('passcode').eq('name', name).single();
+            const title = document.getElementById('passcodeTitle');
+            const subtitle = document.getElementById('passcodeSubtitle');
+
+            if (data && data.passcode && data.passcode.trim() !== '') {
+                isCreatingPasscode = false;
+                title.innerText = `Welcome back, ${name}!`;
+                subtitle.innerText = "Enter your secret passcode to unlock.";
+            } else {
+                isCreatingPasscode = true;
+                title.innerText = `Set your Passcode`;
+                subtitle.innerText = `Create a new PIN code for ${name}.`;
+            }
+        }
+
+        function backToProfiles() {
+            document.getElementById('passcodeInput').value = '';
+            document.getElementById('loginStep2').style.display = 'none';
+            document.getElementById('loginStep1').style.display = 'flex';
+        }
+
+        async function verifyAndLogin() {
+            const inputVal = document.getElementById('passcodeInput').value.trim();
+            if (!inputVal) {
+                alert("Please enter a valid passcode.");
+                return;
+            }
+
+            if (isCreatingPasscode) {
+                const { error } = await supabaseClient.from('user_profiles').upsert({
+                    name: selectedTargetUser,
+                    passcode: inputVal
+                });
+                if (error) {
+                    alert("Error saving passcode.");
+                    return;
+                }
+                finalizeLogin(selectedTargetUser);
+            } else {
+                const { data, error } = await supabaseClient.from('user_profiles').select('passcode').eq('name', selectedTargetUser).single();
+                if (data && data.passcode === inputVal) {
+                    finalizeLogin(selectedTargetUser);
+                } else {
+                    alert("Incorrect passcode! Try again.");
+                }
+            }
+        }
+
+        function finalizeLogin(name) {
+            currentUser = name;
+            localStorage.setItem('currentUser', name);
+            document.getElementById('passcodeInput').value = '';
+            document.getElementById('loginOverlay').style.display = 'none';
+            initAppSession();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            document.getElementById('passcodeInput').value = '';
+            document.getElementById('loginStep2').style.display = 'none';
+            document.getElementById('loginStep1').style.display = 'flex';
+            document.getElementById('loginOverlay').style.display = 'flex';
+        }
+
+        function initAppSession() {
+            document.getElementById('sidebarUserLabel').innerText = currentUser;
+            document.getElementById('welcomeUserTitle').innerText = `Welcome Home, ${currentUser}! ❤️`;
+            document.getElementById('settingsUserLabel').innerText = currentUser;
+            
+            const noteTypeSelect = document.getElementById('noteTypeSelect');
+            if (currentUser === 'Oliver') {
+                noteTypeSelect.value = 'Oliver to Elin';
+            } else {
+                noteTypeSelect.value = 'Elin to Oliver';
+            }
+
+            document.getElementById('eventAuthor').value = currentUser;
+
             initSupabaseNotes();
             initSupabaseCalendar();
             initSupabasePhotos();
-        });
+            fetchDistanceData();
+        }
+
+        /* ========================================================
+           SETTINGS: CHANGE OR REMOVE PIN
+           ======================================================== */
+        async function updatePasscode() {
+            const newPin = document.getElementById('newPasscodeInput').value.trim();
+            if (!newPin) {
+                alert("Please enter a new PIN.");
+                return;
+            }
+            const { error } = await supabaseClient.from('user_profiles').upsert({
+                name: currentUser,
+                passcode: newPin
+            });
+            if (error) {
+                alert("Error updating passcode.");
+            } else {
+                alert("Passcode updated successfully! 🔒");
+                document.getElementById('newPasscodeInput').value = '';
+            }
+        }
+
+        async function clearPasscode() {
+            if (confirm("Are you sure you want to remove your passcode? Anyone can log into your profile without a PIN.")) {
+                const { error } = await supabaseClient.from('user_profiles').upsert({
+                    name: currentUser,
+                    passcode: ''
+                });
+                if (error) {
+                    alert("Error removing passcode.");
+                } else {
+                    alert("Passcode removed! Your profile is now open without a PIN. 🔓");
+                    document.getElementById('newPasscodeInput').value = '';
+                }
+            }
+        }
+
+        /* ========================================================
+           LIVE DISTANCE TRACKER LOGIC
+           ======================================================== */
+        async function updateMyLocation() {
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser.");
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                
+                const { error } = await supabaseClient.from('user_locations').upsert({
+                    name: currentUser,
+                    latitude: lat,
+                    longitude: lon,
+                    updated_at: new Date()
+                }, { onConflict: 'name' });
+
+                if (error) {
+                    alert("Error saving location. Make sure the 'user_locations' table exists in Supabase.");
+                } else {
+                    alert("Location updated successfully! 🌍");
+                    fetchDistanceData();
+                }
+            }, () => {
+                alert("Unable to retrieve your location. Check permission settings.");
+            });
+        }
+
+        async function fetchDistanceData() {
+            const { data, error } = await supabaseClient.from('user_locations').select('*');
+            if (!error && data && data.length >= 2) {
+                const oliverLoc = data.find(d => d.name === 'Oliver');
+                const elinLoc = data.find(d => d.name === 'Elin');
+
+                if (oliverLoc && elinLoc) {
+                    const miles = calculateDistance(oliverLoc.latitude, oliverLoc.longitude, elinLoc.latitude, elinLoc.longitude);
+                    document.getElementById('distanceDisplay').innerHTML = `Oliver and Elin are currently about <strong>${miles} miles</strong> apart. 🌍✨`;
+                } else {
+                    document.getElementById('distanceDisplay').innerText = "Waiting for both Oliver and Elin to update their locations...";
+                }
+            } else {
+                document.getElementById('distanceDisplay').innerText = "Click 'Update My Location' to start tracking distance!";
+            }
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Miles
+            const dLat = (lat2 - lat1) * (Math.PI/180);
+            const dLon = (lon2 - lon1) * (Math.PI/180);
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return (R * c).toFixed(1);
+        }
 
         /* ========================================================
            COUNTDOWN TIMER LOGIC
@@ -728,7 +894,6 @@
                 (ev.color === '#ec4899' || ev.color === '#3b82f6') && ev.event_date >= todayStr
             );
             milestoneEvents.sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
-
             if (milestoneEvents.length > 0) {
                 nextMilestoneEvent = milestoneEvents[0];
                 document.getElementById('countdownTitleDisplay').innerText = `✨ ${escapeHTML(nextMilestoneEvent.title)}`;
@@ -749,7 +914,6 @@
             const targetTime = new Date(`${nextMilestoneEvent.event_date}T00:00:00`).getTime();
             const now = new Date().getTime();
             const difference = targetTime - now;
-
             if (difference <= 0) {
                 document.getElementById('daysNum').innerText = "00";
                 document.getElementById('hoursNum').innerText = "00";
@@ -757,12 +921,10 @@
                 document.getElementById('secsNum').innerText = "00";
                 return;
             }
-
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
             document.getElementById('daysNum').innerText = String(days).padStart(2, '0');
             document.getElementById('hoursNum').innerText = String(hours).padStart(2, '0');
             document.getElementById('minsNum').innerText = String(minutes).padStart(2, '0');
@@ -777,7 +939,6 @@
             } else {
                 notePrev.innerText = "No love notes yet.";
             }
-
             const eventPrev = document.getElementById('latestEventPreview');
             const todayStr = new Date().toISOString().split('T')[0];
             const upcoming = events.find(ev => ev.event_date >= todayStr);
@@ -811,54 +972,43 @@
                 e.preventDefault();
                 const file = fileInput.files[0];
                 if (!file) return;
-
                 uploadBtn.innerText = "Uploading to Cloud... ⏳";
                 uploadBtn.disabled = true;
-
                 const fileExt = file.name.split('.').pop();
                 const fileName = `${Date.now()}.${fileExt}`;
                 const filePath = `${fileName}`;
-
                 const { error: uploadError } = await supabaseClient.storage.from('memory_photos').upload(filePath, file);
-
                 if (uploadError) {
-                    showToast("Error uploading file. Check storage bucket setup.");
+                    alert("Error uploading file. Check storage bucket setup.");
                     uploadBtn.innerText = "Upload Photo 📸";
                     uploadBtn.disabled = false;
                     return;
                 }
-
                 const { data: publicURLData } = supabaseClient.storage.from('memory_photos').getPublicUrl(filePath);
                 const imageUrl = publicURLData.publicUrl;
-
                 const { error: dbError } = await supabaseClient.from('photo_memories').insert([{
                     title: titleInput.value.trim(),
                     folder: folderSelect.value,
                     image_url: imageUrl
                 }]);
-
                 uploadBtn.innerText = "Upload Photo 📸";
                 uploadBtn.disabled = false;
-
                 if (!dbError) {
                     form.reset();
-                    showToast("Photo added to memory lane! 📸");
                     fetchPhotos();
                 } else {
-                    showToast("Error saving metadata. Check 'photo_memories' table.");
+                    alert("Error saving metadata. Check 'photo_memories' table.");
                 }
             });
 
-            window.deletePhoto = async function(id, url) {
+            window.deletePhoto = async function(id) {
                 if (confirm("Delete this photo?")) {
                     const { error } = await supabaseClient.from('photo_memories').delete().eq('id', id);
                     if (!error) {
                         fetchPhotos();
-                        showToast("Photo removed.");
                     }
                 }
             };
-
             fetchPhotos();
         }
 
@@ -868,6 +1018,7 @@
                 const btn = document.getElementById(`folderBtn-${f}`);
                 if (btn) {
                     btn.className = (f === folder) ? 'btn' : 'btn btn-secondary';
+                    btn.style.width = 'auto';
                     btn.style.padding = '0.5rem 1rem';
                     btn.style.fontSize = '0.9rem';
                 }
@@ -878,14 +1029,11 @@
         function renderPhotoGrid() {
             const container = document.getElementById('photoGridContainer');
             container.innerHTML = '';
-
             const filtered = photos.filter(p => currentPhotoFolder === 'all' || p.folder === currentPhotoFolder);
-
             if (filtered.length === 0) {
                 container.innerHTML = `<p style="color: var(--text-muted); grid-column: span full;">No photos found in this folder.</p>`;
                 return;
             }
-
             filtered.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'photo-card';
@@ -898,7 +1046,7 @@
                             <span style="font-size: 0.7rem; color: var(--accent-pink); font-weight: 600; text-transform: uppercase;">${escapeHTML(p.folder)}</span>
                             <h4 style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-main);">${escapeHTML(p.title)}</h4>
                         </div>
-                        <button class="btn btn-secondary" onclick="deletePhoto(${p.id})" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-top: 0.5rem;">Delete Photo</button>
+                        <button class="btn btn-secondary" onclick="deletePhoto(${p.id})" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-top: 0.5rem;">Delete Photo</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -911,8 +1059,6 @@
                 container.innerHTML = `<span style="color: var(--text-muted);">Upload some photos in the Photo Gallery to unlock the daily spotlight!</span>`;
                 return;
             }
-
-            // Pick a deterministic random photo based on today's date string so it changes every day
             const todayStr = new Date().toISOString().split('T')[0];
             let hash = 0;
             for (let i = 0; i < todayStr.length; i++) {
@@ -920,7 +1066,6 @@
             }
             const index = Math.abs(hash) % photos.length;
             const spotlight = photos[index];
-
             container.innerHTML = `
                 <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
                     <img src="${spotlight.image_url}" alt="Spotlight" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; border: 1px solid var(--card-border);">
@@ -934,7 +1079,7 @@
         }
 
         /* ========================================================
-           LOVE NOTES & CALENDAR LOGIC (Existing functionality preserved)
+           LOVE NOTES & CALENDAR LOGIC
            ======================================================== */
         function initSupabaseNotes() {
             const container = document.getElementById('notesContainer');
@@ -942,22 +1087,23 @@
             const titleInput = document.getElementById('noteTitleInput');
             const msgInput = document.getElementById('noteMessageInput');
             const typeSelect = document.getElementById('noteTypeSelect');
-
             const filterAllBtn = document.getElementById('filterAllBtn');
             const filterOliverBtn = document.getElementById('filterOliverBtn');
             const filterElinBtn = document.getElementById('filterElinBtn');
-
+            
             filterAllBtn.addEventListener('click', () => { currentNoteFilter = 'all'; setActiveFilterBtn(filterAllBtn); renderNotesContainer(); });
             filterOliverBtn.addEventListener('click', () => { currentNoteFilter = 'Oliver to Elin'; setActiveFilterBtn(filterOliverBtn); renderNotesContainer(); });
             filterElinBtn.addEventListener('click', () => { currentNoteFilter = 'Elin to Oliver'; setActiveFilterBtn(filterElinBtn); renderNotesContainer(); });
-
+            
             function setActiveFilterBtn(activeBtn) {
                 [filterAllBtn, filterOliverBtn, filterElinBtn].forEach(btn => {
                     btn.className = 'btn btn-secondary';
+                    btn.style.width = 'auto';
                     btn.style.padding = '0.5rem 1rem';
                     btn.style.fontSize = '0.9rem';
                 });
                 activeBtn.className = 'btn';
+                activeBtn.style.width = 'auto';
                 activeBtn.style.padding = '0.5rem 1rem';
                 activeBtn.style.fontSize = '0.9rem';
             }
@@ -969,17 +1115,14 @@
                     if (currentNoteFilter === 'Elin to Oliver') return note.type === 'Elin to Oliver';
                     return true;
                 });
-
                 if (filteredNotes.length === 0) {
                     container.innerHTML = `<p style="color: var(--text-muted); grid-column: span 2;">No notes found for this category.</p>`;
                     return;
                 }
-
                 filteredNotes.forEach(note => {
                     const isOliver = note.type === 'Oliver to Elin';
                     const badgeText = isOliver ? 'Oliver ➔ Elin 📤' : 'Elin ➔ Oliver 📥';
                     const badgeColor = isOliver ? 'var(--accent-purple)' : 'var(--accent-pink)';
-
                     const card = document.createElement('div');
                     card.className = 'glass-card';
                     card.style.margin = '0';
@@ -990,7 +1133,7 @@
                         </div>
                         <h3 style="margin-bottom: 0.5rem; color: var(--text-main);">${escapeHTML(note.title)}</h3>
                         <p style="color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem; font-size: 0.95rem;">${escapeHTML(note.message)}</p>
-                        <button class="btn btn-secondary" onclick="deleteNote(${note.id})" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Delete Note</button>
+                        <button class="btn btn-secondary" onclick="deleteNote(${note.id})" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.8rem;">Delete Note</button>
                     `;
                     container.appendChild(card);
                 });
@@ -1012,10 +1155,10 @@
                     message: msgInput.value.trim(),
                     type: typeSelect.value 
                 }]);
-
                 if (!error) {
                     form.reset();
-                    showToast("Love note saved to cloud! ❤️");
+                    if (currentUser === 'Oliver') typeSelect.value = 'Oliver to Elin';
+                    else typeSelect.value = 'Elin to Oliver';
                     fetchNotes(); 
                 }
             });
@@ -1023,10 +1166,9 @@
             window.deleteNote = async function(id) {
                 if (confirm("Delete note?")) {
                     const { error } = await supabaseClient.from('love_notes').delete().eq('id', id);
-                    if (!error) { fetchNotes(); showToast("Note deleted."); }
+                    if (!error) { fetchNotes(); }
                 }
             };
-
             fetchNotes();
         }
 
@@ -1041,10 +1183,10 @@
             const nextMonthBtn = document.getElementById('nextMonthBtn');
             const monthYearLabel = document.getElementById('currentMonthYearLabel');
             const daysGrid = document.getElementById('calendarDaysGrid');
-
+            
             prevMonthBtn.addEventListener('click', () => { calendarNavDate.setMonth(calendarNavDate.getMonth() - 1); renderCalendar(); });
             nextMonthBtn.addEventListener('click', () => { calendarNavDate.setMonth(calendarNavDate.getMonth() + 1); renderCalendar(); });
-
+            
             async function fetchEvents() {
                 const { data, error } = await supabaseClient.from('calendar_events').select('*').order('event_date', { ascending: true });
                 if (!error && data) {
@@ -1063,10 +1205,9 @@
                     event_date: dateInput.value,
                     color: categoryInput.value
                 }]);
-
                 if (!error) {
                     form.reset();
-                    showToast("Event added to shared calendar! 📅");
+                    authorInput.value = currentUser;
                     fetchEvents();
                 }
             });
@@ -1074,7 +1215,7 @@
             window.deleteEvent = async function(id) {
                 if (confirm("Delete event?")) {
                     const { error } = await supabaseClient.from('calendar_events').delete().eq('id', id);
-                    if (!error) { fetchEvents(); showToast("Event removed."); }
+                    if (!error) { fetchEvents(); }
                 }
             };
 
@@ -1084,29 +1225,23 @@
                 const month = calendarNavDate.getMonth();
                 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 monthYearLabel.innerText = `${monthNames[month]} ${year}`;
-
                 const firstDayIndex = new Date(year, month, 1).getDay();
                 const totalDays = new Date(year, month + 1, 0).getDate();
-
                 for (let i = 0; i < firstDayIndex; i++) {
                     const emptyCell = document.createElement('div');
                     emptyCell.className = 'calendar-cell empty';
                     daysGrid.appendChild(emptyCell);
                 }
-
                 for (let day = 1; day <= totalDays; day++) {
                     const cell = document.createElement('div');
                     cell.className = 'calendar-cell active';
-                    
                     const formattedMonth = String(month + 1).padStart(2, '0');
                     const formattedDay = String(day).padStart(2, '0');
                     const dateString = `${year}-${formattedMonth}-${formattedDay}`;
-
                     const dayNum = document.createElement('div');
                     dayNum.className = 'day-number';
                     dayNum.innerText = day;
                     cell.appendChild(dayNum);
-
                     const dayEvents = events.filter(ev => ev.event_date === dateString);
                     dayEvents.forEach(ev => {
                         const badge = document.createElement('div');
@@ -1115,11 +1250,9 @@
                         badge.innerHTML = `<span><strong>${ev.author}:</strong> ${escapeHTML(ev.title)}</span> <span style="cursor:pointer; font-weight:bold;" onclick="deleteEvent(${ev.id})" title="Delete">&times;</span>`;
                         cell.appendChild(badge);
                     });
-
                     daysGrid.appendChild(cell);
                 }
             }
-
             fetchEvents();
         }
 
