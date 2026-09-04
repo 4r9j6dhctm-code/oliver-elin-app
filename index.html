@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oliver & Elin ❤️</title>
-    <!-- Supabase Client Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- CSS Styling -->
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -16,7 +14,7 @@
             --text-muted: #9ca3af;
             --accent-pink: #ec4899;
             --accent-purple: #8b5cf6;
-            --gradient-primary: linear-gradient(135deg, #ec4899, #8b5cf6);
+            --gradient-primary: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
             --shadow-glow: 0 0 25px rgba(236, 72, 153, 0.3);
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -37,14 +35,10 @@
         }
         #bg-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             pointer-events: none;
         }
-        /* Passcode / Login Overlay Screen */
         #loginOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -70,7 +64,7 @@
             display: flex;
             min-height: 100vh;
         }
-        sidebar {
+        aside {
             width: 260px;
             background: rgba(11, 15, 25, 0.85);
             backdrop-filter: blur(12px);
@@ -78,9 +72,7 @@
             display: flex;
             flex-direction: column;
             position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
+            top: 0; bottom: 0; left: 0;
             z-index: 100;
             transition: var(--transition);
         }
@@ -93,7 +85,6 @@
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
             justify-content: space-between;
         }
         .logout-btn {
@@ -109,10 +100,9 @@
             list-style: none;
             padding: 0 1rem;
             flex: 1;
+            overflow-y: auto;
         }
-        .nav-item {
-            margin-bottom: 0.5rem;
-        }
+        .nav-item { margin-bottom: 0.5rem; }
         .nav-link {
             display: flex;
             align-items: center;
@@ -144,11 +134,7 @@
             justify-content: space-between;
         }
         .menu-toggle {
-            background: none;
-            border: none;
-            color: var(--text-main);
-            font-size: 1.5rem;
-            cursor: pointer;
+            background: none; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer;
         }
         main {
             flex: 1;
@@ -161,9 +147,7 @@
             display: none;
             animation: fadeIn 0.4s ease-in-out forwards;
         }
-        .section.active {
-            display: block;
-        }
+        .section.active { display: block; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -179,10 +163,7 @@
             position: relative;
             overflow: hidden;
         }
-        h1, h2, h3 {
-            font-weight: 700;
-            letter-spacing: -0.025em;
-        }
+        h1, h2, h3 { font-weight: 700; letter-spacing: -0.025em; }
         .hero-title {
             font-size: clamp(2rem, 4vw, 3rem);
             background: var(--gradient-primary);
@@ -190,11 +171,7 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
         }
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-        }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
         .btn {
             background: var(--gradient-primary);
             color: white;
@@ -211,19 +188,14 @@
             box-shadow: var(--shadow-glow);
             width: 100%;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
         .btn-secondary {
             background: transparent;
             border: 1px solid var(--card-border);
             box-shadow: none;
         }
-        .btn-secondary:hover {
-            background: var(--card-bg);
-            border-color: var(--accent-pink);
-        }
+        .btn-secondary:hover { background: var(--card-bg); border-color: var(--accent-pink); }
         input, textarea, select {
             width: 100%;
             background: rgba(255, 255, 255, 0.03);
@@ -240,10 +212,7 @@
             border-color: var(--accent-pink);
             box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
         }
-        select option {
-            background-color: #0b0f19;
-            color: var(--text-main);
-        }
+        select option { background-color: #0b0f19; color: var(--text-main); }
         .grid-2 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -292,51 +261,14 @@
             flex-direction: column;
             transition: var(--transition);
         }
-        .photo-card:hover {
-            border-color: var(--accent-pink);
-            transform: translateY(-3px);
-        }
-        .photo-img-wrapper {
-            width: 100%;
-            height: 180px;
-            overflow: hidden;
-            background: #000;
-        }
-        .photo-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        .photo-card:hover .photo-img-wrapper img {
-            transform: scale(1.05);
-        }
-        .photo-info {
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            flex: 1;
-            justify-content: space-between;
-        }
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-        }
-        .calendar-day-name {
-            text-align: center;
-            font-weight: 600;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            padding: 0.5rem 0;
-        }
+        .photo-card:hover { border-color: var(--accent-pink); transform: translateY(-3px); }
+        .photo-img-wrapper { width: 100%; height: 180px; overflow: hidden; background: #000; }
+        .photo-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .photo-card:hover .photo-img-wrapper img { transform: scale(1.05); }
+        .photo-info { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; justify-content: space-between; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
+        .calendar-day-name { text-align: center; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; padding: 0.5rem 0; }
         .calendar-cell {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--card-border);
@@ -348,19 +280,9 @@
             gap: 0.25rem;
             transition: var(--transition);
         }
-        .calendar-cell.empty {
-            background: transparent;
-            border-color: transparent;
-        }
-        .calendar-cell.active:hover {
-            border-color: var(--accent-pink);
-            background: rgba(255, 255, 255, 0.04);
-        }
-        .day-number {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
+        .calendar-cell.empty { background: transparent; border-color: transparent; }
+        .calendar-cell.active:hover { border-color: var(--accent-pink); background: rgba(255, 255, 255, 0.04); }
+        .day-number { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
         .calendar-event-badge {
             font-size: 0.7rem;
             padding: 0.2rem 0.4rem;
@@ -376,8 +298,8 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.4);
         }
         @media (max-width: 768px) {
-            sidebar { transform: translateX(-100%); }
-            sidebar.open { transform: translateX(0); }
+            aside { transform: translateX(-100%); }
+            aside.open { transform: translateX(0); }
             .mobile-header { display: flex; }
             main { margin-left: 0; padding: 5rem 1rem 2rem 1rem; }
             .calendar-cell { min-height: 70px; padding: 0.25rem; }
@@ -386,16 +308,13 @@
     </style>
 </head>
 <body>
-    <!-- PASSCODE / PROFILE LOGIN OVERLAY -->
     <div id="loginOverlay">
-        <!-- Step 1: Select Profile -->
         <div class="login-card" id="loginStep1">
             <h2 class="hero-title" style="font-size: 2rem;">Who's logging in?</h2>
             <p class="subtitle">Select your profile to enter your shared space.</p>
             <button class="btn" onclick="promptPasscode('Oliver')" style="margin-bottom: 1rem;">Oliver 💙</button>
             <button class="btn btn-secondary" onclick="promptPasscode('Elin')" style="width: 100%;">Elin 💖</button>
         </div>
-        <!-- Step 2: Enter/Create PIN Passcode -->
         <div class="login-card" id="loginStep2" style="display: none;">
             <h2 class="hero-title" id="passcodeTitle" style="font-size: 2rem;">Enter Passcode</h2>
             <p class="subtitle" id="passcodeSubtitle">Enter your secret PIN.</p>
@@ -404,17 +323,14 @@
             <button class="btn btn-secondary" onclick="backToProfiles()" style="width: 100%;">Back</button>
         </div>
     </div>
-
     <canvas id="bg-canvas"></canvas>
     
     <header class="mobile-header">
         <div style="font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Oliver & Elin ❤️</div>
         <button class="menu-toggle" id="menuToggle">☰</button>
     </header>
-
     <div class="app-container">
-        <!-- Sidebar Navigation -->
-        <sidebar id="sidebar">
+        <aside id="sidebar">
             <div class="sidebar-brand">
                 <span>Oliver & Elin</span> 
                 <button class="logout-btn" onclick="logoutUser()">Switch</button>
@@ -425,27 +341,58 @@
             <ul class="nav-menu">
                 <li class="nav-item"><a href="#" class="nav-link active" data-target="home">🏠 Home Hub</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="notes">💌 Love Notes</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-target="lockedletters">⏳ Locked Letters</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="calendar">📅 Shared Calendar</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="photos">📸 Photo Gallery</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-target="bucketlist">🎯 Bucket List</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-target="reasonsjar">🫙 Reasons Jar</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="settings">⚙️ Settings</a></li>
             </ul>
-        </sidebar>
-
+        </aside>
         <main>
-            <!-- 🏠 HOME HUB SECTION -->
             <section id="home" class="section active">
                 <div class="glass-card">
                     <h2 class="hero-title" id="welcomeUserTitle">Welcome Home!</h2>
                     <p class="subtitle">Your shared space for love notes, live distance, and daily planning.</p>
                     
-                    <!-- Live Distance Tracker Card -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">📓 Daily Notebook Check-in</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Click once you've written in your notebook today! When both of you check in, a heart appears on the calendar for today.</p>
+                        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                            <button class="btn" id="notebookCheckinBtn" onclick="toggleTodayNotebookCheckin()" style="width: auto;">Mark Today's Notebook Written ✍️</button>
+                            <span id="notebookStatusText" style="font-size: 0.9rem; color: var(--text-muted);">Loading check-in status...</span>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">🌈 Daily Vibe Check-in</h3>
+                        <div class="grid-2" style="margin-bottom: 1rem;">
+                            <div style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px;">
+                                <strong style="color: var(--accent-pink);">Oliver's Vibe:</strong>
+                                <p id="oliverVibeDisplay" style="margin-top: 0.3rem; color: var(--text-muted);">Loading...</p>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px;">
+                                <strong style="color: var(--accent-purple);">Elin's Vibe:</strong>
+                                <p id="elinVibeDisplay" style="margin-top: 0.3rem; color: var(--text-muted);">Loading...</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                            <select id="myMoodSelect" style="flex: 1; margin-bottom: 0;">
+                                <option value="Happy & Loved 😊">Happy & Loved 😊</option>
+                                <option value="Miss You So Much 🥺">Miss You So Much 🥺</option>
+                                <option value="Busy Working / Studying 📚">Busy Working / Studying 📚</option>
+                                <option value="Excited for our next date! 🎉">Excited for our next date! 🎉</option>
+                                <option value="Sleepy / Cozy 😴">Sleepy / Cozy 😴</option>
+                            </select>
+                            <button class="btn" onclick="updateMyVibe()" style="width: auto; margin-bottom: 0;">Update Vibe ✨</button>
+                        </div>
+                    </div>
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
                         <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">🌍 Distance Between Us</h3>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;" id="distanceDisplay">Click below to update your location and calculate distance...</p>
-                        <button class="btn btn-secondary" onclick="updateMyLocation()" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem; margin-top: 0.75rem;">Update My Location 📍</button>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;" id="distanceDisplay">Connecting to automatic live location tracking...</p>
+                        <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-top: 0.75rem;">
+                            <span style="width: 7px; height: 7px; background: #34d399; border-radius: 50%; display: inline-block;"></span> Live Background Tracking Active 📍
+                        </div>
                     </div>
-
-                    <!-- Countdown Card -->
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                             <div>
@@ -472,13 +419,10 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Daily Memory Spotlight -->
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
                         <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">✨ Daily Memory Spotlight</h3>
                         <div id="dailySpotlightContainer" style="color: var(--text-muted); font-size: 0.95rem;">Loading daily memory...</div>
                     </div>
-
                     <div class="grid-2">
                         <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem;">
                             <h3 style="margin-bottom: 0.75rem; font-size: 1.1rem;">💌 Latest Love Note</h3>
@@ -491,8 +435,7 @@
                     </div>
                 </div>
             </section>
-
-            <!-- 💌 LOVE NOTES SECTION -->
+            
             <section id="notes" class="section">
                 <div class="glass-card">
                     <h2 class="hero-title" style="font-size: 2rem;">Love Notes</h2>
@@ -502,10 +445,10 @@
                         <div class="grid-2" style="margin-bottom: 0;">
                             <div>
                                 <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Note Direction</label>
-                                <select id="noteTypeSelect">
-                                    <option value="Oliver to Elin">Oliver ➔ Elin 📤</option>
-                                    <option value="Elin to Oliver">Elin ➔ Oliver 📥</option>
-                                </select>
+                                <div id="noteDirectionDisplay" style="padding: 0.85rem 1rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 12px; color: var(--text-main); font-weight: 600;">
+                                    Loading...
+                                </div>
+                                <input type="hidden" id="noteTypeInput" value="">
                             </div>
                             <div>
                                 <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Title</label>
@@ -514,7 +457,7 @@
                         </div>
                         <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin: 1rem 0 0.5rem 0;">Message</label>
                         <textarea id="noteMessageInput" rows="3" placeholder="Write your sweet message here..." required></textarea>
-                        <button type="submit" class="btn" style="width: auto;">Save Love Note ❤️</button>
+                        <button type="submit" id="addNoteBtn" class="btn" style="width: auto;">Save Love Note ❤️</button>
                     </form>
                     
                     <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
@@ -526,8 +469,39 @@
                     <div class="grid-2" id="notesContainer"></div>
                 </div>
             </section>
-
-            <!-- 📅 SHARED CALENDAR SECTION -->
+            
+            <section id="lockedletters" class="section">
+                <div class="glass-card">
+                    <h2 class="hero-title" style="font-size: 2rem;">Time-Locked Letters</h2>
+                    <p class="subtitle">Write a letter today that counts down and unlocks on a specific date!</p>
+                    
+                    <form id="lockedLetterForm" style="margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
+                        <div class="grid-2">
+                            <div>
+                                <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Letter Title</label>
+                                <input type="text" id="lockedTitle" placeholder="e.g., Open when you miss me" required style="margin-bottom: 0;">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Unlock Date & Time (Optional if Open Anytime)</label>
+                                <input type="datetime-local" id="lockedDate" style="margin-bottom: 0;">
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="lockedOpenAnytime" style="width: 18px; height: 18px; margin-bottom: 0;">
+                            <label for="lockedOpenAnytime" style="font-size: 0.85rem; color: var(--text-muted);">Allow 'Open Anytime' override (can be opened immediately when clicked without setting a date)</label>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Secret Message</label>
+                            <textarea id="lockedMessage" rows="3" placeholder="Write your time-locked message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn" id="addLockedBtn" style="width: auto; margin-top: 1rem;">Seal & Lock Letter 🔒</button>
+                    </form>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Vault of Letters</h3>
+                    <div class="grid-2" id="lockedLettersContainer">
+                        <p style="color: var(--text-muted);">Loading locked letters...</p>
+                    </div>
+                </div>
+            </section>
             <section id="calendar" class="section">
                 <div class="glass-card">
                     <h2 class="hero-title" style="font-size: 2rem;">Shared Calendar</h2>
@@ -560,15 +534,13 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn" style="width: auto; margin-top: 1.5rem;">Add Event to Calendar 📅</button>
+                        <button type="submit" id="addEventBtn" class="btn" style="width: auto; margin-top: 1.5rem;">Add Event to Calendar 📅</button>
                     </form>
-
                     <div class="calendar-header">
-                        <button class="btn btn-secondary" id="prevMonthBtn" style="width: auto; padding: 0.5rem 1rem;">&larr; Prev</button>
+                        <button class="btn btn-secondary" id="prevMonthBtn" style="width: auto; padding: 0.5rem 1rem;">← Prev</button>
                         <h3 id="currentMonthYearLabel" style="font-size: 1.25rem;">Month Year</h3>
-                        <button class="btn btn-secondary" id="nextMonthBtn" style="width: auto; padding: 0.5rem 1rem;">Next &rarr;</button>
+                        <button class="btn btn-secondary" id="nextMonthBtn" style="width: auto; padding: 0.5rem 1rem;">Next →</button>
                     </div>
-
                     <div class="calendar-grid" id="calendarGridHeader">
                         <div class="calendar-day-name">Sun</div>
                         <div class="calendar-day-name">Mon</div>
@@ -581,8 +553,6 @@
                     <div class="calendar-grid" id="calendarDaysGrid" style="margin-top: 0.5rem;"></div>
                 </div>
             </section>
-
-            <!-- 📸 PHOTO GALLERY SECTION -->
             <section id="photos" class="section">
                 <div class="glass-card">
                     <h2 class="hero-title" style="font-size: 2rem;">Photo Gallery</h2>
@@ -610,7 +580,6 @@
                         </div>
                         <button type="submit" class="btn" id="uploadPhotoBtn" style="width: auto; margin-top: 1rem;">Upload Photo 📸</button>
                     </form>
-
                     <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;" id="folderFilterContainer">
                         <button class="btn" onclick="filterPhotos('all')" id="folderBtn-all" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">All Folders</button>
                         <button class="btn btn-secondary" onclick="filterPhotos('Dates & Romance')" id="folderBtn-Dates & Romance" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">💖 Dates</button>
@@ -618,20 +587,76 @@
                         <button class="btn btn-secondary" onclick="filterPhotos('Random & Funny')" id="folderBtn-Random & Funny" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">✨ Random</button>
                         <button class="btn btn-secondary" onclick="filterPhotos('Milestones')" id="folderBtn-Milestones" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">🏆 Milestones</button>
                     </div>
-
                     <div class="photo-grid" id="photoGridContainer">
                         <p style="color: var(--text-muted);">Loading photos...</p>
                     </div>
                 </div>
             </section>
-
-            <!-- ⚙️ SETTINGS SECTION -->
+            <section id="bucketlist" class="section">
+                <div class="glass-card">
+                    <h2 class="hero-title" style="font-size: 2rem;">Shared Bucket List</h2>
+                    <p class="subtitle">Dream up future trips, adventures, and cute dates to experience together!</p>
+                    
+                    <form id="bucketForm" style="margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
+                        <div class="grid-2" style="margin-bottom: 0;">
+                            <div>
+                                <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Bucket Item Title</label>
+                                <input type="text" id="bucketTitle" placeholder="e.g., Watch northern lights in Norway" required style="margin-bottom: 0;">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Category</label>
+                                <select id="bucketCategory">
+                                    <option value="Travel ✈️">Travel ✈️</option>
+                                    <option value="Food & Dates 🍷">Food & Dates 🍷</option>
+                                    <option value="Activities 🎢">Activities 🎢</option>
+                                    <option value="Future Milestones 💍">Future Milestones 💍</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" id="addBucketBtn" class="btn" style="width: auto; margin-top: 1rem;">Add to Bucket List 🎯</button>
+                    </form>
+                    <div id="bucketListContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <p style="color: var(--text-muted);">Loading bucket list...</p>
+                    </div>
+                </div>
+            </section>
+            <section id="reasonsjar" class="section">
+                <div class="glass-card">
+                    <h2 class="hero-title" style="font-size: 2rem;">Reasons Why I Love You Jar</h2>
+                    <p class="subtitle">Drop sweet little notes into the jar, or pull one out whenever you need a smile!</p>
+                    
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 2rem; text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🫙✨</div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">The Love Jar</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;" id="jarCountText">Loading reasons...</p>
+                        <button class="btn" onclick="drawRandomReason()" style="width: auto; margin-bottom: 1.5rem;">Pull a Random Reason 💖</button>
+                        <div id="drawnReasonDisplay" style="background: rgba(236,72,153,0.05); border: 1px dashed rgba(236,72,153,0.4); padding: 1.25rem; border-radius: 10px; display: none; max-width: 500px; margin: 0 auto;">
+                            <p id="drawnReasonText" style="color: var(--text-main); font-size: 1.05rem; font-style: italic;"></p>
+                        </div>
+                    </div>
+                    <form id="reasonForm" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Add a Reason to the Jar</h3>
+                        <textarea id="reasonInput" rows="3" placeholder="e.g., I love the way you always make me laugh when I'm stressed..." required></textarea>
+                        <button type="submit" id="addReasonBtn" class="btn" style="width: auto;">Drop Into Jar 💌</button>
+                    </form>
+                </div>
+            </section>
             <section id="settings" class="section">
                 <div class="glass-card">
                     <h2 class="hero-title" style="font-size: 2rem;">Security & Settings</h2>
-                    <p class="subtitle">Manage your profile passcode or switch accounts.</p>
+                    <p class="subtitle">Manage your profile passcode, theme colors, or view deleted memories.</p>
                     
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; max-width: 500px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; max-width: 500px; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">🎨 Shared App Theme Color</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Change the main accent colour of buttons and glows for both of you.</p>
+                        
+                        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                            <input type="color" id="themeColorPicker" value="#ec4899" style="width: 60px; height: 40px; padding: 0; cursor: pointer; background: transparent; border: 1px solid var(--card-border); border-radius: 8px;">
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">Pick custom shade</span>
+                        </div>
+                        <button class="btn" onclick="saveGlobalThemeColor()" style="width: auto;">Apply & Sync Theme 🎨</button>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; max-width: 500px; margin-bottom: 2rem;">
                         <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Change Your Passcode</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Update the secret PIN for <strong id="settingsUserLabel" style="color: var(--accent-pink);">...</strong></p>
                         
@@ -643,12 +668,17 @@
                             <button class="btn btn-secondary" onclick="clearPasscode()" style="width: auto; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">Remove PIN 🔓</button>
                         </div>
                     </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">🗑️ Recently Deleted Photos</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Photos moved to trash can be restored or deleted forever.</p>
+                        <div class="photo-grid" id="trashGridContainer" style="margin-top: 0;">
+                            <p style="color: var(--text-muted);">Trash is empty.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
-
-    <!-- JavaScript Application Script -->
     <script>
         const config = {
             supabaseUrl: "https://axonvjmekszerkpvzcrd.supabase.co",
@@ -659,22 +689,26 @@
         let currentUser = localStorage.getItem('currentUser');
         let selectedTargetUser = '';
         let isCreatingPasscode = false;
-
         let notes = [];
+        let lockedLetters = [];
         let events = [];
-        let photos = [];
+        let activePhotos = [];
+        let deletedPhotos = [];
+        let bucketItems = [];
+        let reasons = [];
+        let notebookCheckins = [];
         let currentNoteFilter = 'all';
         let currentPhotoFolder = 'all';
         let calendarNavDate = new Date();
         let nextMilestoneEvent = null;
-
+        
         document.addEventListener('DOMContentLoaded', () => {
+            fetchAndApplyGlobalTheme();
             if (!currentUser) {
                 document.getElementById('loginOverlay').style.display = 'flex';
             } else {
                 initAppSession();
             }
-
             const navLinks = document.querySelectorAll('.nav-link');
             const sections = document.querySelectorAll('.section');
             const sidebar = document.getElementById('sidebar');
@@ -696,19 +730,45 @@
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
-
             setInterval(calculateTimeRemaining, 1000);
+            setInterval(updateLetterCountdowns, 1000);
         });
-
+        
+        async function fetchAndApplyGlobalTheme() {
+            const { data } = await supabaseClient.from('app_settings').select('value').eq('key', 'theme_color').single();
+            if (data && data.value) {
+                applyThemeColor(data.value);
+            }
+            supabaseClient.channel('theme_changes')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'app_settings' }, payload => {
+                    if (payload.new && payload.new.key === 'theme_color') {
+                        applyThemeColor(payload.new.value);
+                    }
+                }).subscribe();
+        }
+        function applyThemeColor(hex) {
+            document.documentElement.style.setProperty('--accent-pink', hex);
+            document.documentElement.style.setProperty('--shadow-glow', `0 0 25px ${hex}4d`);
+            const picker = document.getElementById('themeColorPicker');
+            if (picker) picker.value = hex;
+        }
+        async function saveGlobalThemeColor() {
+            const color = document.getElementById('themeColorPicker').value;
+            const { error } = await supabaseClient.from('app_settings').upsert({ key: 'theme_color', value: color });
+            if (!error) {
+                applyThemeColor(color);
+                alert("Theme colour updated and synced globally! 🎨✨");
+            } else {
+                alert("Error saving theme colour.");
+            }
+        }
         async function promptPasscode(name) {
             selectedTargetUser = name;
             document.getElementById('loginStep1').style.display = 'none';
             document.getElementById('loginStep2').style.display = 'block';
-
-            const { data, error } = await supabaseClient.from('user_profiles').select('passcode').eq('name', name).single();
+            const { data } = await supabaseClient.from('user_profiles').select('passcode').eq('name', name).single();
             const title = document.getElementById('passcodeTitle');
             const subtitle = document.getElementById('passcodeSubtitle');
-
             if (data && data.passcode && data.passcode.trim() !== '') {
                 isCreatingPasscode = false;
                 title.innerText = `Welcome back, ${name}!`;
@@ -719,20 +779,17 @@
                 subtitle.innerText = `Create a new PIN code for ${name}.`;
             }
         }
-
         function backToProfiles() {
             document.getElementById('passcodeInput').value = '';
             document.getElementById('loginStep2').style.display = 'none';
             document.getElementById('loginStep1').style.display = 'flex';
         }
-
         async function verifyAndLogin() {
             const inputVal = document.getElementById('passcodeInput').value.trim();
             if (!inputVal) {
                 alert("Please enter a valid passcode.");
                 return;
             }
-
             if (isCreatingPasscode) {
                 const { error } = await supabaseClient.from('user_profiles').upsert({
                     name: selectedTargetUser,
@@ -744,7 +801,7 @@
                 }
                 finalizeLogin(selectedTargetUser);
             } else {
-                const { data, error } = await supabaseClient.from('user_profiles').select('passcode').eq('name', selectedTargetUser).single();
+                const { data } = await supabaseClient.from('user_profiles').select('passcode').eq('name', selectedTargetUser).single();
                 if (data && data.passcode === inputVal) {
                     finalizeLogin(selectedTargetUser);
                 } else {
@@ -752,7 +809,6 @@
                 }
             }
         }
-
         function finalizeLogin(name) {
             currentUser = name;
             localStorage.setItem('currentUser', name);
@@ -760,7 +816,6 @@
             document.getElementById('loginOverlay').style.display = 'none';
             initAppSession();
         }
-
         function logoutUser() {
             localStorage.removeItem('currentUser');
             currentUser = null;
@@ -769,30 +824,89 @@
             document.getElementById('loginStep1').style.display = 'flex';
             document.getElementById('loginOverlay').style.display = 'flex';
         }
-
         function initAppSession() {
             document.getElementById('sidebarUserLabel').innerText = currentUser;
             document.getElementById('welcomeUserTitle').innerText = `Welcome Home, ${currentUser}! ❤️`;
             document.getElementById('settingsUserLabel').innerText = currentUser;
             
-            const noteTypeSelect = document.getElementById('noteTypeSelect');
+            // Automatically set the Love Note direction and sender info based on who is logged in
+            const noteDirectionDisplay = document.getElementById('noteDirectionDisplay');
+            const noteTypeInput = document.getElementById('noteTypeInput');
             if (currentUser === 'Oliver') {
-                noteTypeSelect.value = 'Oliver to Elin';
+                noteDirectionDisplay.innerHTML = `To: Elin <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">(From Oliver 💙)</span>`;
+                noteTypeInput.value = 'Oliver to Elin';
             } else {
-                noteTypeSelect.value = 'Elin to Oliver';
+                noteDirectionDisplay.innerHTML = `To: Oliver <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">(From Elin 💖)</span>`;
+                noteTypeInput.value = 'Elin to Oliver';
             }
 
             document.getElementById('eventAuthor').value = currentUser;
-
             initSupabaseNotes();
+            initLockedLetters();
             initSupabaseCalendar();
             initSupabasePhotos();
-            fetchDistanceData();
+            initAutoLocationTracking();
+            initBucketList();
+            initReasonsJar();
+            initVibes();
+            initNotebookCheckins();
         }
-
-        /* ========================================================
-           SETTINGS: CHANGE OR REMOVE PIN
-           ======================================================== */
+        
+        async function initNotebookCheckins() {
+            await fetchNotebookCheckins();
+        }
+        async function fetchNotebookCheckins() {
+            const { data, error } = await supabaseClient.from('notebook_checkins').select('*');
+            if (!error && data) {
+                notebookCheckins = data;
+                updateNotebookUI();
+                if (typeof window.renderCalendarGlobal === 'function') {
+                    window.renderCalendarGlobal();
+                }
+            }
+        }
+        async function toggleTodayNotebookCheckin() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const existing = notebookCheckins.find(c => c.name === currentUser && c.checkin_date === todayStr);
+            
+            if (existing) {
+                const { error } = await supabaseClient.from('notebook_checkins').delete().eq('id', existing.id);
+                if (!error) {
+                    alert("Notebook check-in undone for today.");
+                    fetchNotebookCheckins();
+                }
+            } else {
+                const { error } = await supabaseClient.from('notebook_checkins').insert([{ name: currentUser, checkin_date: todayStr }]);
+                if (!error) {
+                    alert("Awesome! Marked today's notebook entry as written ✍️💖");
+                    fetchNotebookCheckins();
+                } else {
+                    alert("Error recording notebook check-in.");
+                }
+            }
+        }
+        function updateNotebookUI() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const myCheckin = notebookCheckins.find(c => c.name === currentUser && c.checkin_date === todayStr);
+            const oliverChecked = notebookCheckins.some(c => c.name === 'Oliver' && c.checkin_date === todayStr);
+            const elinChecked = notebookCheckins.some(c => c.name === 'Elin' && c.checkin_date === todayStr);
+            
+            const btn = document.getElementById('notebookCheckinBtn');
+            const statusText = document.getElementById('notebookStatusText');
+            
+            if (myCheckin) {
+                btn.innerText = "Undo Today's Check-in ✓";
+                btn.className = "btn btn-secondary";
+            } else {
+                btn.innerText = "Mark Today's Notebook Written ✍️";
+                btn.className = "btn";
+            }
+            let statusString = `Oliver: ${oliverChecked ? '✅ Written 💙' : '❌ Not yet'} | Elin: ${elinChecked ? '✅ Written 💖' : '❌ Not yet'}`;
+            if (oliverChecked && elinChecked) {
+                statusString += " — 🎉 Both wrote today! Heart active on calendar.";
+            }
+            statusText.innerText = statusString;
+        }
         async function updatePasscode() {
             const newPin = document.getElementById('newPasscodeInput').value.trim();
             if (!newPin) {
@@ -810,7 +924,6 @@
                 document.getElementById('newPasscodeInput').value = '';
             }
         }
-
         async function clearPasscode() {
             if (confirm("Are you sure you want to remove your passcode? Anyone can log into your profile without a PIN.")) {
                 const { error } = await supabaseClient.from('user_profiles').upsert({
@@ -825,69 +938,57 @@
                 }
             }
         }
-
-        /* ========================================================
-           LIVE DISTANCE TRACKER LOGIC
-           ======================================================== */
-        async function updateMyLocation() {
+        function initAutoLocationTracking() {
             if (!navigator.geolocation) {
-                alert("Geolocation is not supported by your browser.");
+                document.getElementById('distanceDisplay').innerText = "Geolocation is not supported by your browser.";
                 return;
             }
-            navigator.geolocation.getCurrentPosition(async (position) => {
+            navigator.geolocation.watchPosition(async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 
-                const { error } = await supabaseClient.from('user_locations').upsert({
+                await supabaseClient.from('user_locations').upsert({
                     name: currentUser,
                     latitude: lat,
                     longitude: lon,
                     updated_at: new Date()
                 }, { onConflict: 'name' });
-
-                if (error) {
-                    alert("Error saving location. Make sure the 'user_locations' table exists in Supabase.");
-                } else {
-                    alert("Location updated successfully! 🌍");
-                    fetchDistanceData();
-                }
-            }, () => {
-                alert("Unable to retrieve your location. Check permission settings.");
+                fetchDistanceData();
+            }, (error) => {
+                console.log("Error watching position: ", error.message);
+                document.getElementById('distanceDisplay').innerText = "Please enable location permissions in your browser to view distance.";
+            }, {
+                enableHighAccuracy: true,
+                maximumAge: 30000,
+                timeout: 27000
             });
+            setInterval(fetchDistanceData, 10000);
         }
-
         async function fetchDistanceData() {
             const { data, error } = await supabaseClient.from('user_locations').select('*');
             if (!error && data && data.length >= 2) {
                 const oliverLoc = data.find(d => d.name === 'Oliver');
                 const elinLoc = data.find(d => d.name === 'Elin');
-
                 if (oliverLoc && elinLoc) {
                     const miles = calculateDistance(oliverLoc.latitude, oliverLoc.longitude, elinLoc.latitude, elinLoc.longitude);
                     document.getElementById('distanceDisplay').innerHTML = `Oliver and Elin are currently about <strong>${miles} miles</strong> apart. 🌍✨`;
                 } else {
-                    document.getElementById('distanceDisplay').innerText = "Waiting for both Oliver and Elin to update their locations...";
+                    document.getElementById('distanceDisplay').innerText = "Waiting for both Oliver and Elin to activate location tracking...";
                 }
             } else {
-                document.getElementById('distanceDisplay').innerText = "Click 'Update My Location' to start tracking distance!";
+                document.getElementById('distanceDisplay').innerText = "Acquiring live location coordinates...";
             }
         }
-
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 3959; // Miles
+            const R = 3959;
             const dLat = (lat2 - lat1) * (Math.PI/180);
             const dLon = (lon2 - lon1) * (Math.PI/180);
             const a = 
                 Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * 
-                Math.sin(dLon/2) * Math.sin(dLon/2);
+                Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             return (R * c).toFixed(1);
         }
-
-        /* ========================================================
-           COUNTDOWN TIMER LOGIC
-           ======================================================== */
         function updateMilestoneCountdown() {
             const todayStr = new Date().toISOString().split('T')[0];
             const milestoneEvents = events.filter(ev => 
@@ -908,7 +1009,6 @@
                 document.getElementById('secsNum').innerText = "00";
             }
         }
-
         function calculateTimeRemaining() {
             if (!nextMilestoneEvent) return;
             const targetTime = new Date(`${nextMilestoneEvent.event_date}T00:00:00`).getTime();
@@ -930,7 +1030,6 @@
             document.getElementById('minsNum').innerText = String(minutes).padStart(2, '0');
             document.getElementById('secsNum').innerText = String(seconds).padStart(2, '0');
         }
-
         function updateHomePreviews() {
             const notePrev = document.getElementById('latestNotePreview');
             if (notes.length > 0) {
@@ -948,70 +1047,441 @@
                 eventPrev.innerText = "No upcoming events scheduled.";
             }
         }
-
-        /* ========================================================
-           PHOTO GALLERY & DAILY SPOTLIGHT LOGIC
-           ======================================================== */
+        
+        async function initVibes() {
+            await fetchVibes();
+            setInterval(fetchVibes, 15000);
+        }
+        async function fetchVibes() {
+            const { data } = await supabaseClient.from('user_vibes').select('*');
+            if (data) {
+                const oliver = data.find(v => v.name === 'Oliver');
+                const elin = data.find(v => v.name === 'Elin');
+                document.getElementById('oliverVibeDisplay').innerText = oliver ? oliver.mood : 'Not set yet';
+                document.getElementById('elinVibeDisplay').innerText = elin ? elin.mood : 'Not set yet';
+            }
+        }
+        async function updateMyVibe() {
+            const mood = document.getElementById('myMoodSelect').value;
+            const { error } = await supabaseClient.from('user_vibes').upsert({
+                name: currentUser,
+                mood: mood,
+                updated_at: new Date()
+            }, { onConflict: 'name' });
+            if (!error) {
+                alert("Your daily vibe has been updated! 🌈");
+                fetchVibes();
+            } else {
+                alert("Error updating vibe.");
+            }
+        }
+        
+        function initLockedLetters() {
+            const form = document.getElementById('lockedLetterForm');
+            
+            async function fetchLockedLetters() {
+                const { data, error } = await supabaseClient.from('locked_letters').select('*').order('unlock_date', { ascending: true });
+                if (!error && data) {
+                    lockedLetters = data;
+                    renderLockedLetters();
+                }
+            }
+            
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            
+            document.getElementById('lockedLetterForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const activeAddBtn = document.getElementById('addLockedBtn');
+                if (activeAddBtn.disabled) return;
+                activeAddBtn.disabled = true;
+                activeAddBtn.innerText = "Sealing... ⏳";
+                const recipient = currentUser === 'Oliver' ? 'Elin' : 'Oliver';
+                const openAnytime = document.getElementById('lockedOpenAnytime').checked;
+                
+                const localDateValue = document.getElementById('lockedDate').value;
+                let isoUnlockDate;
+                
+                if (openAnytime && !localDateValue) {
+                    isoUnlockDate = new Date().toISOString();
+                } else if (localDateValue) {
+                    isoUnlockDate = new Date(localDateValue).toISOString();
+                } else {
+                    alert("Please select an unlock date/time or check 'Open Anytime'.");
+                    activeAddBtn.disabled = false;
+                    activeAddBtn.innerText = "Seal & Lock Letter 🔒";
+                    return;
+                }
+                
+                const { error } = await supabaseClient.from('locked_letters').insert([{
+                    title: document.getElementById('lockedTitle').value.trim(),
+                    unlock_date: isoUnlockDate,
+                    message: document.getElementById('lockedMessage').value.trim(),
+                    sender: currentUser,
+                    recipient: recipient,
+                    open_anytime: openAnytime
+                }]);
+                activeAddBtn.disabled = false;
+                activeAddBtn.innerText = "Seal & Lock Letter 🔒";
+                if (!error) {
+                    document.getElementById('lockedLetterForm').reset();
+                    fetchLockedLetters();
+                    alert("Letter successfully sealed in the vault! 🔐");
+                } else {
+                    alert("Error sealing letter.");
+                }
+            });
+            window.toggleLetterEnvelope = function(id) {
+                const letter = lockedLetters.find(l => String(l.id) === String(id));
+                if (!letter) return;
+                
+                const now = new Date().getTime();
+                const unlockTime = new Date(letter.unlock_date).getTime();
+                const isTimeUnlocked = now >= unlockTime;
+                const canOpen = isTimeUnlocked || letter.open_anytime;
+                const contentArea = document.getElementById(`letter-content-${id}`);
+                const btnArea = document.getElementById(`letter-btn-${id}`);
+                if (!canOpen) {
+                    alert("This letter is still locked until its scheduled date!");
+                    return;
+                }
+                if (letter.open_anytime && !isTimeUnlocked && contentArea.style.display === 'none') {
+                    if (!confirm("This letter is scheduled for later, but 'Open Anytime' is enabled. Do you want to open it now?")) {
+                        return;
+                    }
+                }
+                if (contentArea.style.display === 'none') {
+                    contentArea.style.display = 'block';
+                    btnArea.innerText = "Seal Back Up 🔒";
+                } else {
+                    contentArea.style.display = 'none';
+                    btnArea.innerText = "Read Letter 💌";
+                }
+            };
+            window.deleteLockedLetter = async function(id) {
+                if (confirm("Are you sure you want to delete this locked letter?")) {
+                    const { error } = await supabaseClient.from('locked_letters').delete().eq('id', id);
+                    if (!error) {
+                        fetchLockedLetters();
+                    } else {
+                        alert("Error deleting letter.");
+                    }
+                }
+            };
+            fetchLockedLetters();
+        }
+        function renderLockedLetters() {
+            const container = document.getElementById('lockedLettersContainer');
+            container.innerHTML = '';
+            if (lockedLetters.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted);">No letters in the vault yet. Seal one above!</p>`;
+                return;
+            }
+            const now = new Date().getTime();
+            lockedLetters.forEach(letter => {
+                const unlockTime = new Date(letter.unlock_date).getTime();
+                const isUnlocked = now >= unlockTime;
+                const canOpen = isUnlocked || letter.open_anytime;
+                const formattedDate = letter.open_anytime && !letter.unlock_date ? 'Open Anytime' : new Date(letter.unlock_date).toLocaleString();
+                
+                const card = document.createElement('div');
+                card.style.cssText = `background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;`;
+                
+                card.innerHTML = `
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-pink);">From ${escapeHTML(letter.sender)} ➔ ${escapeHTML(letter.recipient)}</span>
+                            <span style="font-size: 0.75rem; background: ${canOpen ? 'rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3)'}; padding: 0.2rem 0.5rem; border-radius: 6px;">
+                                ${canOpen ? '🔓 Unlocked' : '🔒 Locked'}
+                            </span>
+                        </div>
+                        <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.25rem;">${escapeHTML(letter.title)}</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Unlocks on: ${formattedDate}</p>
+                        <div class="letter-countdown" data-unlock="${letter.unlock_date}" data-anytime="${letter.open_anytime}" style="font-size: 0.8rem; color: var(--accent-purple); font-weight: 600; margin-bottom: 0.5rem;">Calculating countdown...</div>
+                    </div>
+                    
+                    <div id="letter-content-${letter.id}" style="display: none; background: rgba(236,72,153,0.05); border: 1px dashed rgba(236,72,153,0.4); padding: 1rem; border-radius: 10px; font-style: italic; color: var(--text-main);">
+                        "${escapeHTML(letter.message)}"
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <button class="btn ${canOpen ? '' : 'btn-secondary'}" onclick="toggleLetterEnvelope(${letter.id})" id="letter-btn-${letter.id}" style="flex: 1; padding: 0.5rem; font-size: 0.85rem;">
+                            ${canOpen ? 'Read Letter 💌' : 'Locked ⏳'}
+                        </button>
+                        <button class="btn btn-secondary" onclick="deleteLockedLetter(${letter.id})" style="width: auto; padding: 0.5rem 0.75rem; font-size: 0.85rem; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">Delete</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            updateLetterCountdowns();
+        }
+        function updateLetterCountdowns() {
+            const timers = document.querySelectorAll('.letter-countdown');
+            const now = new Date().getTime();
+            timers.forEach(timer => {
+                const isAnytime = timer.getAttribute('data-anytime') === 'true';
+                if (isAnytime) {
+                    timer.textContent = "🔓 Open Anytime Enabled";
+                    return;
+                }
+                const unlockStr = timer.getAttribute('data-unlock');
+                const unlockTime = new Date(unlockStr).getTime();
+                const difference = unlockTime - now;
+                if (difference <= 0) {
+                    timer.textContent = "🔓 Ready to open!";
+                } else {
+                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                    timer.textContent = `⏳ Unlocks in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }
+            });
+        }
+        function initBucketList() {
+            const form = document.getElementById('bucketForm');
+            
+            async function fetchBucket() {
+                const { data } = await supabaseClient.from('bucket_list').select('*').order('created_at', { ascending: false });
+                if (data) {
+                    bucketItems = data;
+                    renderBucketList();
+                }
+            }
+            
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            const activeForm = document.getElementById('bucketForm');
+            const activeTitleInput = document.getElementById('bucketTitle');
+            const activeCategorySelect = document.getElementById('bucketCategory');
+            const activeAddBtn = document.getElementById('addBucketBtn');
+            
+            activeForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (activeAddBtn.disabled) return;
+                activeAddBtn.disabled = true;
+                activeAddBtn.innerText = "Adding... ⏳";
+                const { error } = await supabaseClient.from('bucket_list').insert([{
+                    title: activeTitleInput.value.trim(),
+                    category: activeCategorySelect.value,
+                    completed: false,
+                    added_by: currentUser
+                }]);
+                activeAddBtn.disabled = false;
+                activeAddBtn.innerText = "Add to Bucket List 🎯";
+                if (!error) {
+                    activeForm.reset();
+                    fetchBucket();
+                } else {
+                    alert("Error adding item.");
+                }
+            });
+            window.toggleBucketItem = async function(id, currentStatus) {
+                await supabaseClient.from('bucket_list').update({ completed: !currentStatus }).eq('id', id);
+                fetchBucket();
+            };
+            window.deleteBucketItem = async function(id) {
+                if (confirm("Delete this bucket item?")) {
+                    await supabaseClient.from('bucket_list').delete().eq('id', id);
+                    fetchBucket();
+                }
+            };
+            fetchBucket();
+        }
+        function renderBucketList() {
+            const container = document.getElementById('bucketListContainer');
+            container.innerHTML = '';
+            if (bucketItems.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted);">No bucket list items yet. Add one above!</p>`;
+                return;
+            }
+            bucketItems.forEach(item => {
+                const div = document.createElement('div');
+                div.style.cssText = `background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;`;
+                div.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem; flex: 1;">
+                        <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleBucketItem(${item.id}, ${item.completed})" style="width: 20px; height: 20px; cursor: pointer; margin-bottom: 0;">
+                        <div>
+                            <span style="font-size: 0.75rem; color: var(--accent-pink); font-weight: 600;">${escapeHTML(item.category)}</span>
+                            <h4 style="font-size: 1rem; color: var(--text-main); text-decoration: ${item.completed ? 'line-through' : 'none'}; opacity: ${item.completed ? '0.6' : '1'};">${escapeHTML(item.title)}</h4>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">Added by ${item.added_by}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="deleteBucketItem(${item.id})" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">Delete</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function initReasonsJar() {
+            const form = document.getElementById('reasonForm');
+            
+            async function fetchReasons() {
+                const { data } = await supabaseClient.from('reasons_jar').select('*');
+                if (data) {
+                    reasons = data;
+                    document.getElementById('jarCountText').innerText = `There are currently ${reasons.length} sweet notes inside the jar!`;
+                }
+            }
+            
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            const activeForm = document.getElementById('reasonForm');
+            const activeInput = document.getElementById('reasonInput');
+            const activeAddBtn = document.getElementById('addReasonBtn');
+            
+            activeForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (activeAddBtn.disabled) return;
+                activeAddBtn.disabled = true;
+                activeAddBtn.innerText = "Dropping... ⏳";
+                const { error } = await supabaseClient.from('reasons_jar').insert([{
+                    reason: activeInput.value.trim(),
+                    added_by: currentUser
+                }]);
+                activeAddBtn.disabled = false;
+                activeAddBtn.innerText = "Drop Into Jar 💌";
+                if (!error) {
+                    activeForm.reset();
+                    alert("Your reason was successfully dropped into the jar! 🫙💖");
+                    fetchReasons();
+                } else {
+                    alert("Error adding reason.");
+                }
+            });
+            fetchReasons();
+        }
+        window.drawRandomReason = function() {
+            if (reasons.length === 0) {
+                alert("The jar is empty! Add some reasons below first.");
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * reasons.length);
+            const picked = reasons[randomIndex];
+            const display = document.getElementById('drawnReasonDisplay');
+            const text = document.getElementById('drawnReasonText');
+            text.innerHTML = `"${escapeHTML(picked.reason)}" <br><span style="font-size: 0.8rem; color: var(--accent-pink); font-style: normal; display: block; margin-top: 0.5rem;">— Written by ${picked.added_by}</span>`;
+            display.style.display = 'block';
+        };
         function initSupabasePhotos() {
             const form = document.getElementById('photoForm');
-            const titleInput = document.getElementById('photoTitle');
-            const folderSelect = document.getElementById('photoFolder');
-            const fileInput = document.getElementById('photoFile');
-            const uploadBtn = document.getElementById('uploadPhotoBtn');
-
+            
             async function fetchPhotos() {
                 const { data, error } = await supabaseClient.from('photo_memories').select('*').order('created_at', { ascending: false });
                 if (!error && data) {
-                    photos = data;
+                    activePhotos = data.filter(p => p.folder !== 'trash');
+                    deletedPhotos = data.filter(p => p.folder === 'trash');
                     renderPhotoGrid();
+                    renderTrashGrid();
                     updateDailySpotlight();
                 }
             }
-
-            form.addEventListener('submit', async (e) => {
+            
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            const activeForm = document.getElementById('photoForm');
+            const activeUploadBtn = document.getElementById('uploadPhotoBtn');
+            
+            activeForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const file = fileInput.files[0];
+                if (activeUploadBtn.disabled) return;
+                const file = document.getElementById('photoFile').files[0];
                 if (!file) return;
-                uploadBtn.innerText = "Uploading to Cloud... ⏳";
-                uploadBtn.disabled = true;
+                
+                activeUploadBtn.innerText = "Uploading to Cloud... ⏳";
+                activeUploadBtn.disabled = true;
+                
                 const fileExt = file.name.split('.').pop();
                 const fileName = `${Date.now()}.${fileExt}`;
                 const filePath = `${fileName}`;
                 const { error: uploadError } = await supabaseClient.storage.from('memory_photos').upload(filePath, file);
                 if (uploadError) {
-                    alert("Error uploading file. Check storage bucket setup.");
-                    uploadBtn.innerText = "Upload Photo 📸";
-                    uploadBtn.disabled = false;
+                    alert("Error uploading file.");
+                    activeUploadBtn.innerText = "Upload Photo 📸";
+                    activeUploadBtn.disabled = false;
                     return;
                 }
                 const { data: publicURLData } = supabaseClient.storage.from('memory_photos').getPublicUrl(filePath);
                 const imageUrl = publicURLData.publicUrl;
                 const { error: dbError } = await supabaseClient.from('photo_memories').insert([{
-                    title: titleInput.value.trim(),
-                    folder: folderSelect.value,
+                    title: document.getElementById('photoTitle').value.trim(),
+                    folder: document.getElementById('photoFolder').value,
                     image_url: imageUrl
                 }]);
-                uploadBtn.innerText = "Upload Photo 📸";
-                uploadBtn.disabled = false;
+                activeUploadBtn.innerText = "Upload Photo 📸";
+                activeUploadBtn.disabled = false;
                 if (!dbError) {
-                    form.reset();
+                    activeForm.reset();
                     fetchPhotos();
                 } else {
-                    alert("Error saving metadata. Check 'photo_memories' table.");
+                    alert("Error saving metadata.");
                 }
             });
-
-            window.deletePhoto = async function(id) {
-                if (confirm("Delete this photo?")) {
-                    const { error } = await supabaseClient.from('photo_memories').delete().eq('id', id);
-                    if (!error) {
-                        fetchPhotos();
-                    }
-                }
-            };
+            window.fetchPhotosGlobal = fetchPhotos;
             fetchPhotos();
         }
-
+        
+        document.getElementById('photoGridContainer').addEventListener('click', async (e) => {
+            const targetBtn = e.target.closest('.delete-photo-btn');
+            if (targetBtn) {
+                const id = targetBtn.getAttribute('data-id');
+                if (confirm("Move this photo to the Recently Deleted bin?")) {
+                    const { error } = await supabaseClient
+                        .from('photo_memories')
+                        .update({ folder: 'trash' })
+                        .eq('id', id);
+                    
+                    if (!error) {
+                        if (typeof window.fetchPhotosGlobal === 'function') {
+                            window.fetchPhotosGlobal();
+                        }
+                    } else {
+                        alert("Error moving photo to trash.");
+                    }
+                }
+            }
+        });
+        
+        document.getElementById('trashGridContainer').addEventListener('click', async (e) => {
+            const restoreBtn = e.target.closest('.restore-photo-btn');
+            const permDeleteBtn = e.target.closest('.permanent-delete-btn');
+            if (restoreBtn) {
+                const id = restoreBtn.getAttribute('data-id');
+                const { error } = await supabaseClient
+                    .from('photo_memories')
+                    .update({ folder: 'Dates & Romance' })
+                    .eq('id', id);
+                
+                if (!error) {
+                    if (typeof window.fetchPhotosGlobal === 'function') {
+                        window.fetchPhotosGlobal();
+                    }
+                } else {
+                    alert("Error restoring photo.");
+                }
+            }
+            if (permDeleteBtn) {
+                const id = permDeleteBtn.getAttribute('data-id');
+                if (confirm("Permanently delete this photo?")) {
+                    const photoToDelete = deletedPhotos.find(p => String(p.id) === String(id));
+                    if (photoToDelete && photoToDelete.image_url) {
+                        const urlParts = photoToDelete.image_url.split('/');
+                        const fileName = urlParts[urlParts.length - 1];
+                        await supabaseClient.storage.from('memory_photos').remove([fileName]);
+                    }
+                    const { error } = await supabaseClient
+                        .from('photo_memories')
+                        .delete()
+                        .eq('id', id);
+                    if (!error) {
+                        if (typeof window.fetchPhotosGlobal === 'function') {
+                            window.fetchPhotosGlobal();
+                        }
+                    } else {
+                        alert("Error permanently deleting photo.");
+                    }
+                }
+            }
+        });
         window.filterPhotos = function(folder) {
             currentPhotoFolder = folder;
             ['all', 'Dates & Romance', 'Trips & Adventures', 'Random & Funny', 'Milestones'].forEach(f => {
@@ -1025,11 +1495,10 @@
             });
             renderPhotoGrid();
         };
-
         function renderPhotoGrid() {
             const container = document.getElementById('photoGridContainer');
             container.innerHTML = '';
-            const filtered = photos.filter(p => currentPhotoFolder === 'all' || p.folder === currentPhotoFolder);
+            const filtered = activePhotos.filter(p => currentPhotoFolder === 'all' || p.folder === currentPhotoFolder);
             if (filtered.length === 0) {
                 container.innerHTML = `<p style="color: var(--text-muted); grid-column: span full;">No photos found in this folder.</p>`;
                 return;
@@ -1046,16 +1515,43 @@
                             <span style="font-size: 0.7rem; color: var(--accent-pink); font-weight: 600; text-transform: uppercase;">${escapeHTML(p.folder)}</span>
                             <h4 style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-main);">${escapeHTML(p.title)}</h4>
                         </div>
-                        <button class="btn btn-secondary" onclick="deletePhoto(${p.id})" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-top: 0.5rem;">Delete Photo</button>
+                        <button class="btn btn-secondary delete-photo-btn" data-id="${p.id}" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-top: 0.5rem;">Delete Photo</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
-
+        function renderTrashGrid() {
+            const container = document.getElementById('trashGridContainer');
+            container.innerHTML = '';
+            if (deletedPhotos.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); grid-column: span full;">Trash is empty.</p>`;
+                return;
+            }
+            deletedPhotos.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.innerHTML = `
+                    <div class="photo-img-wrapper">
+                        <img src="${p.image_url}" alt="${escapeHTML(p.title)}" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <div>
+                            <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">${escapeHTML(p.folder)}</span>
+                            <h4 style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-main);">${escapeHTML(p.title)}</h4>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                            <button class="btn restore-photo-btn" data-id="${p.id}" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; flex: 1;">Restore</button>
+                            <button class="btn btn-secondary permanent-delete-btn" data-id="${p.id}" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">Delete</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
         function updateDailySpotlight() {
             const container = document.getElementById('dailySpotlightContainer');
-            if (photos.length === 0) {
+            if (activePhotos.length === 0) {
                 container.innerHTML = `<span style="color: var(--text-muted);">Upload some photos in the Photo Gallery to unlock the daily spotlight!</span>`;
                 return;
             }
@@ -1064,8 +1560,8 @@
             for (let i = 0; i < todayStr.length; i++) {
                 hash = todayStr.charCodeAt(i) + ((hash << 5) - hash);
             }
-            const index = Math.abs(hash) % photos.length;
-            const spotlight = photos[index];
+            const index = Math.abs(hash) % activePhotos.length;
+            const spotlight = activePhotos[index];
             container.innerHTML = `
                 <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
                     <img src="${spotlight.image_url}" alt="Spotlight" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; border: 1px solid var(--card-border);">
@@ -1077,16 +1573,9 @@
                 </div>
             `;
         }
-
-        /* ========================================================
-           LOVE NOTES & CALENDAR LOGIC
-           ======================================================== */
         function initSupabaseNotes() {
-            const container = document.getElementById('notesContainer');
             const form = document.getElementById('noteForm');
-            const titleInput = document.getElementById('noteTitleInput');
-            const msgInput = document.getElementById('noteMessageInput');
-            const typeSelect = document.getElementById('noteTypeSelect');
+            const container = document.getElementById('notesContainer');
             const filterAllBtn = document.getElementById('filterAllBtn');
             const filterOliverBtn = document.getElementById('filterOliverBtn');
             const filterElinBtn = document.getElementById('filterElinBtn');
@@ -1107,7 +1596,6 @@
                 activeBtn.style.padding = '0.5rem 1rem';
                 activeBtn.style.fontSize = '0.9rem';
             }
-
             function renderNotesContainer() {
                 container.innerHTML = '';
                 const filteredNotes = notes.filter(note => {
@@ -1121,8 +1609,8 @@
                 }
                 filteredNotes.forEach(note => {
                     const isOliver = note.type === 'Oliver to Elin';
-                    const badgeText = isOliver ? 'Oliver ➔ Elin 📤' : 'Elin ➔ Oliver 📥';
-                    const badgeColor = isOliver ? 'var(--accent-purple)' : 'var(--accent-pink)';
+                    const badgeText = isOliver ? 'To: Elin (From Oliver 💙)' : 'To: Oliver (From Elin 💖)';
+                    const badgeColor = isOliver ? '#3b82f6' : 'var(--accent-pink)';
                     const card = document.createElement('div');
                     card.className = 'glass-card';
                     card.style.margin = '0';
@@ -1138,7 +1626,6 @@
                     container.appendChild(card);
                 });
             }
-
             async function fetchNotes() {
                 const { data, error } = await supabaseClient.from('love_notes').select('*').order('created_at', { ascending: false });
                 if (!error && data) {
@@ -1147,22 +1634,35 @@
                     updateHomePreviews();
                 }
             }
-
-            form.addEventListener('submit', async (e) => {
+            
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            
+            document.getElementById('noteForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const activeBtn = document.getElementById('addNoteBtn');
+                if (activeBtn.disabled) return;
+                activeBtn.disabled = true;
+                activeBtn.innerText = "Saving... ⏳";
+                
                 const { error } = await supabaseClient.from('love_notes').insert([{ 
-                    title: titleInput.value.trim(), 
-                    message: msgInput.value.trim(),
-                    type: typeSelect.value 
+                    title: document.getElementById('noteTitleInput').value.trim(), 
+                    message: document.getElementById('noteMessageInput').value.trim(),
+                    type: document.getElementById('noteTypeInput').value 
                 }]);
+                
+                activeBtn.disabled = false;
+                activeBtn.innerText = "Save Love Note ❤️";
                 if (!error) {
-                    form.reset();
-                    if (currentUser === 'Oliver') typeSelect.value = 'Oliver to Elin';
-                    else typeSelect.value = 'Elin to Oliver';
+                    document.getElementById('noteForm').reset();
+                    if (currentUser === 'Oliver') {
+                        document.getElementById('noteTypeInput').value = 'Oliver to Elin';
+                    } else {
+                        document.getElementById('noteTypeInput').value = 'Elin to Oliver';
+                    }
                     fetchNotes(); 
                 }
             });
-
             window.deleteNote = async function(id) {
                 if (confirm("Delete note?")) {
                     const { error } = await supabaseClient.from('love_notes').delete().eq('id', id);
@@ -1171,14 +1671,8 @@
             };
             fetchNotes();
         }
-
         function initSupabaseCalendar() {
             const form = document.getElementById('eventForm');
-            const authorInput = document.getElementById('eventAuthor');
-            const titleInput = document.getElementById('eventTitle');
-            const dateInput = document.getElementById('eventDate');
-            const categoryInput = document.getElementById('eventCategory');
-            
             const prevMonthBtn = document.getElementById('prevMonthBtn');
             const nextMonthBtn = document.getElementById('nextMonthBtn');
             const monthYearLabel = document.getElementById('currentMonthYearLabel');
@@ -1196,29 +1690,38 @@
                     updateHomePreviews();
                 }
             }
-
-            form.addEventListener('submit', async (e) => {
+            
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            
+            document.getElementById('eventForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const activeBtn = document.getElementById('addEventBtn');
+                if (activeBtn.disabled) return;
+                activeBtn.disabled = true;
+                activeBtn.innerText = "Adding... ⏳";
+                
                 const { error } = await supabaseClient.from('calendar_events').insert([{
-                    author: authorInput.value,
-                    title: titleInput.value.trim(),
-                    event_date: dateInput.value,
-                    color: categoryInput.value
+                    author: document.getElementById('eventAuthor').value,
+                    title: document.getElementById('eventTitle').value.trim(),
+                    event_date: document.getElementById('eventDate').value,
+                    color: document.getElementById('eventCategory').value
                 }]);
+                
+                activeBtn.disabled = false;
+                activeBtn.innerText = "Add Event to Calendar 📅";
                 if (!error) {
-                    form.reset();
-                    authorInput.value = currentUser;
+                    document.getElementById('eventForm').reset();
+                    document.getElementById('eventAuthor').value = currentUser;
                     fetchEvents();
                 }
             });
-
             window.deleteEvent = async function(id) {
                 if (confirm("Delete event?")) {
                     const { error } = await supabaseClient.from('calendar_events').delete().eq('id', id);
                     if (!error) { fetchEvents(); }
                 }
             };
-
             function renderCalendar() {
                 daysGrid.innerHTML = '';
                 const year = calendarNavDate.getFullYear();
@@ -1238,28 +1741,46 @@
                     const formattedMonth = String(month + 1).padStart(2, '0');
                     const formattedDay = String(day).padStart(2, '0');
                     const dateString = `${year}-${formattedMonth}-${formattedDay}`;
+                    
+                    const dayHeaderRow = document.createElement('div');
+                    dayHeaderRow.style.cssText = "display: flex; justify-content: space-between; align-items: center;";
+                    
                     const dayNum = document.createElement('div');
                     dayNum.className = 'day-number';
                     dayNum.innerText = day;
-                    cell.appendChild(dayNum);
+                    dayHeaderRow.appendChild(dayNum);
+                    
+                    const oliverDone = notebookCheckins.some(c => c.name === 'Oliver' && c.checkin_date === dateString);
+                    const elinDone = notebookCheckins.some(c => c.name === 'Elin' && c.checkin_date === dateString);
+                    
+                    if (oliverDone || elinDone) {
+                        const heartContainer = document.createElement('div');
+                        heartContainer.style.fontSize = '0.75rem';
+                        let heartsStr = '';
+                        if (oliverDone) heartsStr += '💙';
+                        if (elinDone) heartsStr += '💖';
+                        heartContainer.innerText = heartsStr;
+                        dayHeaderRow.appendChild(heartContainer);
+                    }
+                    cell.appendChild(dayHeaderRow);
                     const dayEvents = events.filter(ev => ev.event_date === dateString);
                     dayEvents.forEach(ev => {
                         const badge = document.createElement('div');
                         badge.className = 'calendar-event-badge';
                         badge.style.backgroundColor = ev.color;
-                        badge.innerHTML = `<span><strong>${ev.author}:</strong> ${escapeHTML(ev.title)}</span> <span style="cursor:pointer; font-weight:bold;" onclick="deleteEvent(${ev.id})" title="Delete">&times;</span>`;
+                        badge.innerHTML = `<span><strong>${ev.author}:</strong> ${escapeHTML(ev.title)}</span> <span style="cursor:pointer; font-weight:bold;" onclick="deleteEvent(${ev.id})" title="Delete">×</span>`;
                         cell.appendChild(badge);
                     });
                     daysGrid.appendChild(cell);
                 }
             }
+            window.renderCalendarGlobal = renderCalendar;
             fetchEvents();
         }
-
         function escapeHTML(str) {
             if (!str) return '';
             return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)
+                tag => ({ '&': '&', '<': '<', '>': '>', "'": "'", '"': '"'}[tag] || tag)
             );
         }
     </script>
