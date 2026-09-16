@@ -266,6 +266,107 @@
         .photo-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
         .photo-card:hover .photo-img-wrapper img { transform: scale(1.05); }
         .photo-info { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; justify-content: space-between; }
+        .voucher-panel {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .voucher-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 0.75rem;
+        }
+        .voucher-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: rgba(236,72,153,0.1);
+            color: var(--accent-pink);
+            border: 1px solid rgba(236,72,153,0.2);
+        }
+        .voucher-toast {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 2000;
+            background: linear-gradient(135deg, rgba(236,72,153,0.98), rgba(139,92,246,0.9));
+            color: white;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 12px 32px rgba(236,72,153,0.35);
+            min-width: 280px;
+            max-width: 360px;
+            display: none;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .voucher-toast.show { display: block; }
+        .sketch-panel {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 1rem;
+        }
+        .sketch-canvas-wrap {
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            margin-top: 1rem;
+        }
+        #sketchCanvas {
+            display: block;
+            width: 100%;
+            height: 320px;
+            cursor: crosshair;
+            background: white;
+        }
+        .sketch-controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .sketch-controls input[type="color"] {
+            width: 48px;
+            height: 42px;
+            padding: 0.2rem;
+            margin-bottom: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .sketch-controls input[type="range"] {
+            flex: 1;
+            min-width: 120px;
+            margin-bottom: 0;
+        }
+        .mini-board {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(70px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .mini-board button {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 2rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .mini-board button:hover {
+            border-color: var(--accent-pink);
+            background: rgba(236, 72, 153, 0.08);
+        }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
         .calendar-day-name { text-align: center; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; padding: 0.5rem 0; }
@@ -342,11 +443,12 @@
                 <li class="nav-item"><a href="#" class="nav-link active" data-target="home">🏠 Home Hub</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="notes">💌 Love Notes</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="lockedletters">⏳ Locked Letters</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-target="sketchpad">🎨 Sketch Pad</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-target="vouchers">🎟️ Vouchers</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="calendar">📅 Shared Calendar</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="photos">📸 Photo Gallery</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="bucketlist">🎯 Bucket List</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="reasonsjar">🫙 Reasons Jar</a></li>
-                <li class="nav-item"><a href="#" class="nav-link" data-target="suggestions">💡 Suggestions</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="settings">⚙️ Settings</a></li>
             </ul>
         </aside>
@@ -380,10 +482,21 @@
                         <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
                             <select id="myMoodSelect" style="flex: 1; margin-bottom: 0;">
                                 <option value="Happy & Loved 😊">Happy & Loved 😊</option>
-                                <option value="Miss You So Much 🥺">Miss You So Much 🥺</option>
+                                <option value="So in Love 💞">So in Love 💞</option>
+                                <option value="Missing You Like Crazy 🫶">Missing You Like Crazy 🫶</option>
                                 <option value="Busy Working / Studying 📚">Busy Working / Studying 📚</option>
+                                <option value="Feeling Productive ⚡">Feeling Productive ⚡</option>
+                                <option value="Tired but Cozy 😴">Tired but Cozy 😴</option>
                                 <option value="Excited for our next date! 🎉">Excited for our next date! 🎉</option>
-                                <option value="Sleepy / Cozy 😴">Sleepy / Cozy 😴</option>
+                                <option value="Dreaming About Us ✨">Dreaming About Us ✨</option>
+                                <option value="Stressed but Holding On 💪">Stressed but Holding On 💪</option>
+                                <option value="Feeling Nostalgic 🌙">Feeling Nostalgic 🌙</option>
+                                <option value="Absolutely Blessed 🙏">Absolutely Blessed 🙏</option>
+                                <option value="Needing a Hug 🫂">Needing a Hug 🫂</option>
+                                <option value="Feeling Cute / Romantic 💋">Feeling Cute / Romantic 💋</option>
+                                <option value="Content & Calm 🌿">Content & Calm 🌿</option>
+                                <option value="Looking Forward to Us 🥰">Looking Forward to Us 🥰</option>
+                                <option value="A Bit Overwhelmed 😵">A Bit Overwhelmed 😵</option>
                             </select>
                             <button class="btn" onclick="updateMyVibe()" style="width: auto; margin-bottom: 0;">Update Vibe ✨</button>
                         </div>
@@ -492,6 +605,10 @@
                             <input type="checkbox" id="lockedOpenAnytime" style="width: 18px; height: 18px; margin-bottom: 0;">
                             <label for="lockedOpenAnytime" style="font-size: 0.85rem; color: var(--text-muted);">Allow 'Open Anytime' override (can be opened immediately when clicked without setting a date)</label>
                         </div>
+                        <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="lockedOpenWhenNearby" style="width: 18px; height: 18px; margin-bottom: 0;">
+                            <label for="lockedOpenWhenNearby" style="font-size: 0.85rem; color: var(--text-muted);">Open when you’re within 1 mile of each other (GPS unlock)</label>
+                        </div>
                         <div style="margin-top: 1rem;">
                             <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Secret Message</label>
                             <textarea id="lockedMessage" rows="3" placeholder="Write your time-locked message here..." required></textarea>
@@ -501,6 +618,43 @@
                     <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Vault of Letters</h3>
                     <div class="grid-2" id="lockedLettersContainer">
                         <p style="color: var(--text-muted);">Loading locked letters...</p>
+                    </div>
+                </div>
+            </section>
+            <section id="sketchpad" class="section">
+                <div class="glass-card">
+                    <h2 class="hero-title" style="font-size: 2rem;">Sketch Pad</h2>
+                    <p class="subtitle">Leave quick doodles, tiny notes, and a live Tic-Tac-Toe board for each other.</p>
+                    <div class="grid-2">
+                        <div class="sketch-panel">
+                            <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">✏️ Live Doodle Board</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Sketch little ideas, love notes, or tiny doodles together live on screen.</p>
+                            <div class="sketch-canvas-wrap">
+                                <canvas id="sketchCanvas" width="640" height="320"></canvas>
+                            </div>
+                            <div class="sketch-controls">
+                                <input type="color" id="sketchColor" value="#ec4899" aria-label="Pick pen color">
+                                <input type="range" id="sketchBrush" min="2" max="18" value="4" aria-label="Brush size">
+                                <button class="btn btn-secondary" onclick="clearSketchBoard()" style="width: auto; padding: 0.7rem 1rem; margin-bottom: 0;">Clear Board</button>
+                            </div>
+                        </div>
+                        <div class="sketch-panel">
+                            <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">⭕ Tic-Tac-Toe</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">A quick game to play together in real time.</p>
+                            <div id="tictactoeStatus" style="font-weight: 600; color: var(--accent-pink); margin-bottom: 0.75rem;">Player X starts</div>
+                            <div class="mini-board" id="tictactoeBoard">
+                                <button type="button" data-index="0" aria-label="Cell 1"></button>
+                                <button type="button" data-index="1" aria-label="Cell 2"></button>
+                                <button type="button" data-index="2" aria-label="Cell 3"></button>
+                                <button type="button" data-index="3" aria-label="Cell 4"></button>
+                                <button type="button" data-index="4" aria-label="Cell 5"></button>
+                                <button type="button" data-index="5" aria-label="Cell 6"></button>
+                                <button type="button" data-index="6" aria-label="Cell 7"></button>
+                                <button type="button" data-index="7" aria-label="Cell 8"></button>
+                                <button type="button" data-index="8" aria-label="Cell 9"></button>
+                            </div>
+                            <button class="btn btn-secondary" onclick="resetTicTacToe()" style="width: auto; padding: 0.7rem 1rem; margin-top: 1rem; margin-bottom: 0;">Reset Game</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -530,9 +684,14 @@
                                 <select id="eventCategory">
                                     <option value="#ec4899">💖 Date / Romance (Pink) [Countdown Milestone]</option>
                                     <option value="#3b82f6">✈️ Travel / Trip (Blue) [Countdown Milestone]</option>
-                                    <option value="#8b5a2b">🤎 Work / Busy (Brown)</option>
+                                    <option value="#8b5a2b">💼 Work / Busy (Brown)</option>
                                     <option value="#10b981">🎉 Friends / Social (Green)</option>
                                     <option value="#f59e0b">📌 General / Other (Amber)</option>
+                                    <option value="#14b8a6">🏡 Home / Life Admin (Teal)</option>
+                                    <option value="#a855f7">✨ Milestone / Memory (Purple)</option>
+                                    <option value="#ef4444">💪 Fitness / Health (Red)</option>
+                                    <option value="#f97316">🍽️ Food / Date Night (Orange)</option>
+                                    <option value="#06b6d4">🎧 Study / Quiet Time (Cyan)</option>
                                 </select>
                             </div>
                         </div>
@@ -563,8 +722,8 @@
                     <form id="photoForm" style="margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
                         <div class="grid-2">
                             <div>
-                                <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Caption / Title</label>
-                                <input type="text" id="photoTitle" placeholder="e.g., Summer trip" required style="margin-bottom: 0;">
+                                <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Caption / Title (optional)</label>
+                                <input type="text" id="photoTitle" placeholder="e.g., Summer trip" style="margin-bottom: 0;">
                             </div>
                             <div>
                                 <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Folder / Category</label>
@@ -577,8 +736,8 @@
                             </div>
                         </div>
                         <div style="margin-top: 1rem;">
-                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Select Image File</label>
-                            <input type="file" id="photoFile" accept="image/*" required style="background: transparent; border: none; padding: 0;">
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Select Image File(s)</label>
+                            <input type="file" id="photoFile" accept="image/*" multiple style="background: transparent; border: none; padding: 0;">
                         </div>
                         <button type="submit" class="btn" id="uploadPhotoBtn" style="width: auto; margin-top: 1rem;">Upload Photo 📸</button>
                     </form>
@@ -644,24 +803,44 @@
                 </div>
             </section>
             
-            <section id="suggestions" class="section">
+            <section id="vouchers" class="section">
                 <div class="glass-card">
-                    <h2 class="hero-title" style="font-size: 2rem;">Suggestions & Ideas</h2>
-                    <p class="subtitle">Have an idea for a new feature, a surprise date, or an app improvement? Drop it here!</p>
-                    
-                    <form id="suggestionForm" style="margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Suggestion Title</label>
-                        <input type="text" id="suggestionTitleInput" placeholder="e.g., Add a mini quiz game..." required>
-                        
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin: 1rem 0 0.5rem 0;">Details / Description</label>
-                        <textarea id="suggestionDescInput" rows="3" placeholder="Explain your idea..." required></textarea>
-                        
-                        <button type="submit" id="addSuggestionBtn" class="btn" style="width: auto; margin-top: 1rem;">Submit Suggestion 💡</button>
-                    </form>
-                    
-                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Shared Suggestion Box</h3>
-                    <div class="grid-2" id="suggestionsContainer">
-                        <p style="color: var(--text-muted);">Loading suggestions...</p>
+                    <h2 class="hero-title" style="font-size: 2rem;">Weekly Vouchers</h2>
+                    <p class="subtitle">Create up to five little surprise vouchers each week. Every Wednesday, one random voucher from the other person is ready to be redeemed.</p>
+
+                    <div id="voucherReadyToast" class="voucher-toast"></div>
+
+                    <div class="grid-2" style="margin-bottom: 1.5rem;">
+                        <div class="voucher-panel">
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Create a Voucher 🎟️</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">You can make up to 5 vouchers this week.</p>
+                            <input type="text" id="voucherTitleInput" placeholder="Spicy pic 😉" required>
+                            <textarea id="voucherDetailInput" rows="3" placeholder="e.g., one surprise date night, late-night snack run, or a flirty little dare..." required></textarea>
+                            <button class="btn" id="addVoucherBtn" style="width: auto; margin-bottom: 0;">Create Voucher ✨</button>
+                        </div>
+                        <div class="voucher-panel">
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">This Week’s Status</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;" id="voucherCountText">Loading vouchers...</p>
+                            <div id="voucherReadyStatus" style="background: rgba(255,255,255,0.02); border: 1px dashed rgba(236,72,153,0.4); border-radius: 10px; padding: 1rem; color: var(--text-main); min-height: 90px;">
+                                Checking redemption status...
+                            </div>
+                            <button class="btn btn-secondary" onclick="triggerVoucherRedeemCheck()" style="width: auto; margin-top: 1rem; margin-bottom: 0;">Check Voucher Status 🔍</button>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="voucher-panel">
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">My Voucher Bank</h3>
+                            <div id="myVoucherListContainer">
+                                <p style="color: var(--text-muted);">No vouchers created yet this week.</p>
+                            </div>
+                        </div>
+                        <div class="voucher-panel">
+                            <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">My Hidden Surprise</h3>
+                            <div id="receivedVoucherContainer">
+                                <p style="color: var(--text-muted);">No surprise voucher has been drawn yet.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -744,13 +923,25 @@
         let bucketItems = [];
         let reasons = [];
         let notebookCheckins = [];
-        let suggestions = [];
         let currentNoteFilter = 'all';
         let currentPhotoFolder = 'all';
         let calendarNavDate = new Date();
         let calendarInitialized = false;
         let notificationEnabled = localStorage.getItem('notificationEnabled') !== 'false';
         let nextMilestoneEvent = null;
+        let lastKnownDistanceMiles = null;
+        
+        function hasUsersWithinOneMile() {
+            return typeof lastKnownDistanceMiles === 'number' && lastKnownDistanceMiles <= 1;
+        }
+        
+        function canOpenLetter(letter) {
+            const now = new Date().getTime();
+            const unlockTime = letter.unlock_date ? new Date(letter.unlock_date).getTime() : null;
+            const isTimeUnlocked = unlockTime !== null && now >= unlockTime;
+            const locationUnlocked = !!letter.open_when_near && hasUsersWithinOneMile();
+            return isTimeUnlocked || !!letter.open_anytime || locationUnlocked;
+        }
         
         document.addEventListener('DOMContentLoaded', () => {
             fetchAndApplyGlobalTheme();
@@ -1027,6 +1218,8 @@
             syncNotificationToggleUI();
             initSupabaseNotes();
             initLockedLetters();
+            initSketchPad();
+            initVouchersSection();
             initSupabaseCalendar();
             initSupabasePhotos();
             initAutoLocationTracking();
@@ -1034,73 +1227,6 @@
             initReasonsJar();
             initVibes();
             initNotebookCheckins();
-            initSuggestions();
-        }
-        
-        function initSuggestions() {
-            const form = document.getElementById('suggestionForm');
-            
-            async function fetchSuggestions() {
-                const { data, error } = await supabaseClient.from('app_suggestions').select('*').order('created_at', { ascending: false });
-                if (!error && data) {
-                    suggestions = data;
-                    renderSuggestions();
-                }
-            }
-            const newForm = form.cloneNode(true);
-            form.parentNode.replaceChild(newForm, form);
-            document.getElementById('suggestionForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const btn = document.getElementById('addSuggestionBtn');
-                if (btn.disabled) return;
-                btn.disabled = true;
-                btn.innerText = "Submitting... ⏳";
-                const { error } = await supabaseClient.from('app_suggestions').insert([{
-                    title: document.getElementById('suggestionTitleInput').value.trim(),
-                    description: document.getElementById('suggestionDescInput').value.trim(),
-                    author: currentUser
-                }]);
-                btn.disabled = false;
-                btn.innerText = "Submit Suggestion 💡";
-                if (!error) {
-                    document.getElementById('suggestionForm').reset();
-                    fetchSuggestions();
-                    alert("Suggestion submitted successfully! 💡✨");
-                } else {
-                    alert("Error saving suggestion.");
-                }
-            });
-            window.deleteSuggestion = async function(id) {
-                if (confirm("Delete this suggestion?")) {
-                    const { error } = await supabaseClient.from('app_suggestions').delete().eq('id', id);
-                    if (!error) fetchSuggestions();
-                }
-            };
-            fetchSuggestions();
-        }
-        function renderSuggestions() {
-            const container = document.getElementById('suggestionsContainer');
-            container.innerHTML = '';
-            if (suggestions.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted);">No suggestions added yet. Be the first to add one above!</p>`;
-                return;
-            }
-            suggestions.forEach(item => {
-                const card = document.createElement('div');
-                card.style.cssText = `background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 0.75rem;`;
-                card.innerHTML = `
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-                            <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-pink);">Suggested by ${escapeHTML(item.author)}</span>
-                            <span style="font-size: 0.75rem; color: var(--text-muted);">${new Date(item.created_at).toLocaleDateString()}</span>
-                        </div>
-                        <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.3rem;">${escapeHTML(item.title)}</h4>
-                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.4;">${escapeHTML(item.description)}</p>
-                    </div>
-                    <button class="btn btn-secondary" onclick="deleteSuggestion(${item.id})" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">Delete</button>
-                `;
-                container.appendChild(card);
-            });
         }
         function getSelectedNotebookDate() {
             const dateInput = document.getElementById('notebookCheckinDateInput');
@@ -1239,12 +1365,18 @@
                 const oliverLoc = data.find(d => d.name === 'Oliver');
                 const elinLoc = data.find(d => d.name === 'Elin');
                 if (oliverLoc && elinLoc) {
-                    const miles = calculateDistance(oliverLoc.latitude, oliverLoc.longitude, elinLoc.latitude, elinLoc.longitude);
+                    const miles = Number(calculateDistance(oliverLoc.latitude, oliverLoc.longitude, elinLoc.latitude, elinLoc.longitude));
+                    lastKnownDistanceMiles = miles;
                     document.getElementById('distanceDisplay').innerHTML = `Oliver and Elin are currently about <strong>${miles} miles</strong> apart. 🌍✨`;
+                    if (typeof window.renderLockedLetters === 'function') {
+                        window.renderLockedLetters();
+                    }
                 } else {
+                    lastKnownDistanceMiles = null;
                     document.getElementById('distanceDisplay').innerText = "Waiting for both Oliver and Elin to activate location tracking...";
                 }
             } else {
+                lastKnownDistanceMiles = null;
                 document.getElementById('distanceDisplay').innerText = "Acquiring live location coordinates...";
             }
         }
@@ -1367,32 +1499,49 @@
                 activeAddBtn.innerText = "Sealing... ⏳";
                 const recipient = currentUser === 'Oliver' ? 'Elin' : 'Oliver';
                 const openAnytime = document.getElementById('lockedOpenAnytime').checked;
+                const openWhenNearby = document.getElementById('lockedOpenWhenNearby').checked;
                 
                 const localDateValue = document.getElementById('lockedDate').value;
-                let isoUnlockDate;
+                let isoUnlockDate = null;
                 
                 if (openAnytime && !localDateValue) {
-                    isoUnlockDate = new Date().toISOString();
+                    isoUnlockDate = null;
                 } else if (localDateValue) {
                     isoUnlockDate = new Date(localDateValue).toISOString();
-                } else {
-                    alert("Please select an unlock date/time or check 'Open Anytime'.");
+                } else if (!openWhenNearby) {
+                    alert("Please select an unlock date/time, check 'Open Anytime', or enable GPS proximity unlock.");
                     activeAddBtn.disabled = false;
                     activeAddBtn.innerText = "Seal & Lock Letter 🔒";
                     return;
                 }
                 
-                const { error } = await supabaseClient.from('locked_letters').insert([{
+                const insertPayload = {
                     title: document.getElementById('lockedTitle').value.trim(),
                     unlock_date: isoUnlockDate,
                     message: document.getElementById('lockedMessage').value.trim(),
                     sender: currentUser,
                     recipient: recipient,
-                    open_anytime: openAnytime
-                }]);
+                    open_anytime: openAnytime,
+                    open_when_near: openWhenNearby
+                };
+
+                const { error } = await supabaseClient.from('locked_letters').insert([insertPayload]);
+                let fallbackError = null;
+                if (error && openWhenNearby) {
+                    const fallbackPayload = {
+                        title: insertPayload.title,
+                        unlock_date: isoUnlockDate,
+                        message: insertPayload.message,
+                        sender: insertPayload.sender,
+                        recipient: insertPayload.recipient,
+                        open_anytime: openAnytime || openWhenNearby
+                    };
+                    const fallbackResult = await supabaseClient.from('locked_letters').insert([fallbackPayload]);
+                    fallbackError = fallbackResult.error;
+                }
                 activeAddBtn.disabled = false;
                 activeAddBtn.innerText = "Seal & Lock Letter 🔒";
-                if (!error) {
+                if (!error && !fallbackError) {
                     document.getElementById('lockedLetterForm').reset();
                     fetchLockedLetters();
                     sendAppNotification('Locked letter sealed 🔒', `${currentUser} just sent a locked letter to ${recipient}.`);
@@ -1406,13 +1555,14 @@
                 if (!letter) return;
                 
                 const now = new Date().getTime();
-                const unlockTime = new Date(letter.unlock_date).getTime();
-                const isTimeUnlocked = now >= unlockTime;
-                const canOpen = isTimeUnlocked || letter.open_anytime;
+                const unlockTime = letter.unlock_date ? new Date(letter.unlock_date).getTime() : null;
+                const isTimeUnlocked = unlockTime !== null && now >= unlockTime;
+                const canOpen = canOpenLetter(letter);
                 const contentArea = document.getElementById(`letter-content-${id}`);
                 const btnArea = document.getElementById(`letter-btn-${id}`);
                 if (!canOpen) {
-                    alert("This letter is still locked until its scheduled date!");
+                    const reason = letter.open_when_near ? "This letter is still locked until you’re within 1 mile of each other!" : "This letter is still locked until its scheduled date!";
+                    alert(reason);
                     return;
                 }
                 if (letter.open_anytime && !isTimeUnlocked && contentArea.style.display === 'none') {
@@ -1449,10 +1599,13 @@
             }
             const now = new Date().getTime();
             lockedLetters.forEach(letter => {
-                const unlockTime = new Date(letter.unlock_date).getTime();
-                const isUnlocked = now >= unlockTime;
-                const canOpen = isUnlocked || letter.open_anytime;
-                const formattedDate = letter.open_anytime && !letter.unlock_date ? 'Open Anytime' : new Date(letter.unlock_date).toLocaleString();
+                const unlockTime = letter.unlock_date ? new Date(letter.unlock_date).getTime() : null;
+                const isUnlocked = unlockTime !== null && now >= unlockTime;
+                const locationUnlocked = !!letter.open_when_near && hasUsersWithinOneMile();
+                const canOpen = canOpenLetter(letter);
+                const formattedDate = letter.open_when_near
+                    ? (letter.unlock_date ? `Unlocks on ${new Date(letter.unlock_date).toLocaleString()} or when within 1 mile` : 'Unlocks when you’re within 1 mile of each other')
+                    : (letter.open_anytime && !letter.unlock_date ? 'Open Anytime' : (letter.unlock_date ? new Date(letter.unlock_date).toLocaleString() : 'No unlock date set'));
                 
                 const card = document.createElement('div');
                 card.style.cssText = `background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;`;
@@ -1466,8 +1619,8 @@
                             </span>
                         </div>
                         <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.25rem;">${escapeHTML(letter.title)}</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Unlocks on: ${formattedDate}</p>
-                        <div class="letter-countdown" data-unlock="${letter.unlock_date}" data-anytime="${letter.open_anytime}" style="font-size: 0.8rem; color: var(--accent-purple); font-weight: 600; margin-bottom: 0.5rem;">Calculating countdown...</div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">${letter.open_when_near ? 'Unlocks by GPS proximity' : 'Unlocks on:'} ${formattedDate}</p>
+                        <div class="letter-countdown" data-unlock="${letter.unlock_date || ''}" data-anytime="${letter.open_anytime || false}" data-nearby="${letter.open_when_near || false}" style="font-size: 0.8rem; color: var(--accent-purple); font-weight: 600; margin-bottom: 0.5rem;">Calculating countdown...</div>
                     </div>
                     
                     <div id="letter-content-${letter.id}" style="display: none; background: rgba(236,72,153,0.05); border: 1px dashed rgba(236,72,153,0.4); padding: 1rem; border-radius: 10px; font-style: italic; color: var(--text-main);">
@@ -1489,11 +1642,20 @@
             const now = new Date().getTime();
             timers.forEach(timer => {
                 const isAnytime = timer.getAttribute('data-anytime') === 'true';
+                const isNearby = timer.getAttribute('data-nearby') === 'true';
                 if (isAnytime) {
                     timer.textContent = "🔓 Open Anytime Enabled";
                     return;
                 }
+                if (isNearby) {
+                    timer.textContent = hasUsersWithinOneMile() ? "📍 You’re within 1 mile — it’s unlocked!" : "📍 Unlocks when you’re within 1 mile of each other";
+                    return;
+                }
                 const unlockStr = timer.getAttribute('data-unlock');
+                if (!unlockStr) {
+                    timer.textContent = "🔓 Ready to open!";
+                    return;
+                }
                 const unlockTime = new Date(unlockStr).getTime();
                 const difference = unlockTime - now;
                 if (difference <= 0) {
@@ -1506,6 +1668,433 @@
                     timer.textContent = `⏳ Unlocks in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }
             });
+        }
+
+        function getCurrentWeekKey(date = new Date()) {
+            const d = new Date(date);
+            const day = d.getDay() || 7;
+            d.setHours(0, 0, 0, 0);
+            d.setDate(d.getDate() + 4 - day);
+            const yearStart = new Date(d.getFullYear(), 0, 1);
+            const weekNumber = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+            return `${d.getFullYear()}-W${weekNumber}`;
+        }
+
+        function getVoucherState() {
+            try {
+                return JSON.parse(localStorage.getItem('coupleVouchers') || '{}');
+            } catch (error) {
+                return {};
+            }
+        }
+
+        function saveVoucherState(state) {
+            localStorage.setItem('coupleVouchers', JSON.stringify(state));
+        }
+
+        function getUserVoucherData(name) {
+            if (!name) return { thisWeek: [], received: [], ready: null, lastDrawWeek: null };
+            const state = getVoucherState();
+            if (!state[name]) {
+                state[name] = { thisWeek: [], received: [], ready: null, lastDrawWeek: null };
+                saveVoucherState(state);
+            }
+            return state[name];
+        }
+
+        function getVoucherOpponent(name) {
+            return name === 'Oliver' ? 'Elin' : 'Oliver';
+        }
+
+        function showVoucherToast(message) {
+            const toast = document.getElementById('voucherReadyToast');
+            if (!toast) return;
+            toast.innerHTML = `<strong>🎟️ Voucher ready</strong><br>${message}`;
+            toast.classList.add('show');
+            clearTimeout(window.voucherToastTimer);
+            window.voucherToastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 6000);
+            if (typeof sendAppNotification === 'function') {
+                sendAppNotification('Voucher ready to redeem 🎟️', message);
+            }
+        }
+
+        function processVoucherWeekDraws() {
+            const state = getVoucherState();
+            const weekKey = getCurrentWeekKey();
+            const names = ['Oliver', 'Elin'];
+            let anyAwarded = false;
+
+            names.forEach((person) => {
+                const other = getVoucherOpponent(person);
+                if (!state[other]) {
+                    state[other] = { thisWeek: [], received: [], ready: null, lastDrawWeek: null };
+                }
+                const personData = getUserVoucherData(person);
+                const weekMeta = state.meta && state.meta[weekKey];
+                if (weekMeta && weekMeta[person]) return;
+
+                const partnerVouchers = ((state[other] && state[other].thisWeek) || []).filter(v => v.weekKey === weekKey && !v.claimedBy && !v.redeemed);
+                if (!partnerVouchers.length) return;
+
+                const selected = partnerVouchers[Math.floor(Math.random() * partnerVouchers.length)];
+                personData.ready = {
+                    ...selected,
+                    createdBy: other,
+                    weekKey,
+                    redeemed: false,
+                    awardedTo: person,
+                    awardedAt: new Date().toISOString()
+                };
+                personData.lastDrawWeek = weekKey;
+                state[other].thisWeek = (state[other].thisWeek || []).map(v => v.id === selected.id ? { ...v, claimedBy: person, status: 'claimed' } : v);
+                state.meta = state.meta || {};
+                state.meta[weekKey] = state.meta[weekKey] || {};
+                state.meta[weekKey][person] = selected.id;
+                anyAwarded = true;
+                saveVoucherState(state);
+            });
+
+            if (anyAwarded) {
+                const userReady = getUserVoucherData(currentUser).ready;
+                if (userReady && userReady.weekKey === weekKey) {
+                    showVoucherToast(`${currentUser}, your surprise voucher from ${userReady.createdBy} is ready to redeem.`);
+                }
+            }
+            renderVoucherPanel();
+        }
+
+        function triggerVoucherRedeemCheck() {
+            processVoucherWeekDraws();
+        }
+
+        function renderVoucherPanel() {
+            if (!currentUser) return;
+            const countText = document.getElementById('voucherCountText');
+            const readyStatus = document.getElementById('voucherReadyStatus');
+            const myList = document.getElementById('myVoucherListContainer');
+            const receivedList = document.getElementById('receivedVoucherContainer');
+            if (!countText || !readyStatus || !myList || !receivedList) return;
+
+            const userData = getUserVoucherData(currentUser);
+            const weekKey = getCurrentWeekKey();
+            const thisWeekVouchers = (userData.thisWeek || []).filter(v => v.weekKey === weekKey);
+            const readyVoucher = userData.ready && userData.ready.weekKey === weekKey ? userData.ready : null;
+
+            countText.innerText = `You have created ${thisWeekVouchers.length} / 5 vouchers this week.`;
+
+            if (readyVoucher) {
+                readyStatus.innerHTML = `
+                    <div style="font-size: 0.8rem; color: var(--accent-pink); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Voucher ready</div>
+                    <div style="font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem;">${escapeHTML(readyVoucher.title)}</div>
+                    <p style="color: var(--text-muted); margin: 0;">From ${escapeHTML(readyVoucher.createdBy)} • Claim it before the week ends.</p>
+                    <button class="btn" onclick="redeemCurrentVoucher()" style="width: auto; margin-top: 1rem; margin-bottom: 0;">Redeem Surprise 🎉</button>
+                `;
+            } else {
+                readyStatus.innerHTML = '<span style="color: var(--text-muted);">No voucher is ready yet. A random surprise will appear on Wednesday.</span>';
+            }
+
+            if (thisWeekVouchers.length === 0) {
+                myList.innerHTML = '<p style="color: var(--text-muted);">No vouchers created yet this week.</p>';
+            } else {
+                myList.innerHTML = thisWeekVouchers.map(v => `
+                    <div class="voucher-card">
+                        <div class="voucher-badge">Voucher ${v.id}</div>
+                        <h4 style="margin-top: 0.6rem; margin-bottom: 0.35rem; font-size: 1rem;">${escapeHTML(v.title)}</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">${escapeHTML(v.detail)}</p>
+                    </div>
+                `).join('');
+            }
+
+            if (!readyVoucher) {
+                receivedList.innerHTML = '<p style="color: var(--text-muted);">No surprise voucher has been drawn yet.</p>';
+            } else {
+                receivedList.innerHTML = `
+                    <div class="voucher-card">
+                        <div class="voucher-badge">Mystery prize</div>
+                        <h4 style="margin-top: 0.7rem; margin-bottom: 0.4rem; font-size: 1rem;">${escapeHTML(readyVoucher.title)}</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">${escapeHTML(readyVoucher.detail)}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function redeemCurrentVoucher() {
+            const userData = getUserVoucherData(currentUser);
+            const weekKey = getCurrentWeekKey();
+            if (!userData.ready || userData.ready.weekKey !== weekKey) {
+                alert('No voucher is ready to redeem yet.');
+                return;
+            }
+            const redeemed = {
+                ...userData.ready,
+                redeemedAt: new Date().toISOString(),
+                redeemed: true
+            };
+            userData.received.push(redeemed);
+            userData.ready = null;
+            const state = getVoucherState();
+            if (state[redeemed.createdBy]) {
+                state[redeemed.createdBy].thisWeek = (state[redeemed.createdBy].thisWeek || []).map(v => v.id === redeemed.id ? { ...v, redeemed: true, usedBy: currentUser } : v);
+            }
+            saveVoucherState(state);
+            renderVoucherPanel();
+            alert(`Voucher redeemed! Your surprise from ${redeemed.createdBy} is officially claimed. 🎉`);
+        }
+
+        function addVoucher() {
+            if (!currentUser) return;
+            const title = document.getElementById('voucherTitleInput').value.trim();
+            const detail = document.getElementById('voucherDetailInput').value.trim();
+            if (!title || !detail) {
+                alert('Add a voucher title and a little detail for your surprise.');
+                return;
+            }
+
+            const state = getVoucherState();
+            const weekKey = getCurrentWeekKey();
+            if (!state[currentUser]) state[currentUser] = { thisWeek: [], received: [], ready: null, lastDrawWeek: null };
+            const thisWeekVouchers = (state[currentUser].thisWeek || []).filter(v => v.weekKey === weekKey);
+            if (thisWeekVouchers.length >= 5) {
+                alert('You can only make 5 vouchers a week.');
+                return;
+            }
+
+            const voucherItem = {
+                id: `${currentUser}-${Date.now()}`,
+                title,
+                detail,
+                weekKey,
+                createdAt: new Date().toISOString(),
+                claimedBy: null,
+                redeemed: false,
+                status: 'open'
+            };
+
+            state[currentUser].thisWeek = [...(state[currentUser].thisWeek || []), voucherItem];
+            saveVoucherState(state);
+            document.getElementById('voucherTitleInput').value = '';
+            document.getElementById('voucherDetailInput').value = '';
+            renderVoucherPanel();
+            processVoucherWeekDraws();
+        }
+
+        function initVouchersSection() {
+            const addBtn = document.getElementById('addVoucherBtn');
+            if (addBtn) {
+                addBtn.addEventListener('click', addVoucher);
+            }
+            processVoucherWeekDraws();
+            renderVoucherPanel();
+        }
+
+        function initSketchPad() {
+            const storageKey = 'sharedSketchPadState';
+            const sketchCanvas = document.getElementById('sketchCanvas');
+            if (!sketchCanvas) return;
+            const ctx = sketchCanvas.getContext('2d');
+            const colorInput = document.getElementById('sketchColor');
+            const brushInput = document.getElementById('sketchBrush');
+            const boardButtons = Array.from(document.querySelectorAll('#tictactoeBoard button'));
+            const statusLabel = document.getElementById('tictactoeStatus');
+
+            let isDrawing = false;
+            let lastPoint = null;
+            let boardState = ['', '', '', '', '', '', '', '', ''];
+            let currentTurn = 'X';
+            let hasWinner = false;
+
+            function setupCanvasBackground() {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, sketchCanvas.width, sketchCanvas.height);
+            }
+
+            function applyCanvasState(dataUrl) {
+                if (!dataUrl) {
+                    setupCanvasBackground();
+                    return;
+                }
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, sketchCanvas.width, sketchCanvas.height);
+                    setupCanvasBackground();
+                    ctx.drawImage(img, 0, 0, sketchCanvas.width, sketchCanvas.height);
+                };
+                img.src = dataUrl;
+            }
+
+            function saveSketchState() {
+                const state = {
+                    canvasData: sketchCanvas.toDataURL('image/png'),
+                    board: boardState,
+                    turn: currentTurn,
+                    winner: hasWinner,
+                    status: statusLabel ? statusLabel.textContent : ''
+                };
+                localStorage.setItem(storageKey, JSON.stringify(state));
+                if (window.sketchBoardChannel) {
+                    window.sketchBoardChannel.postMessage(state);
+                }
+            }
+
+            function syncSketchStateFromStorage() {
+                try {
+                    const savedState = JSON.parse(localStorage.getItem(storageKey) || '{}');
+                    if (savedState.canvasData) {
+                        applyCanvasState(savedState.canvasData);
+                    } else {
+                        setupCanvasBackground();
+                    }
+                    if (Array.isArray(savedState.board) && savedState.board.length === 9) {
+                        boardState = savedState.board.slice();
+                        currentTurn = savedState.turn || 'X';
+                        hasWinner = !!savedState.winner;
+                    }
+                    renderBoard();
+                } catch (error) {
+                    setupCanvasBackground();
+                    renderBoard();
+                }
+            }
+
+            function renderBoard() {
+                boardButtons.forEach((button, index) => {
+                    button.textContent = boardState[index] || '';
+                    button.disabled = !!boardState[index] || hasWinner;
+                });
+                if (hasWinner) {
+                    statusLabel.textContent = `${currentTurn} wins!`;
+                } else if (!boardState.includes('')) {
+                    statusLabel.textContent = 'It\'s a draw!';
+                } else {
+                    statusLabel.textContent = `Player ${currentTurn}'s turn`;
+                }
+            }
+
+            function checkWinner(board) {
+                const lines = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                    [0, 4, 8], [2, 4, 6]
+                ];
+                for (const [a, b, c] of lines) {
+                    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                        return board[a];
+                    }
+                }
+                return null;
+            }
+
+            function handleCellMove(index) {
+                if (boardState[index] || hasWinner) return;
+                boardState[index] = currentTurn;
+                const winner = checkWinner(boardState);
+                if (winner) {
+                    hasWinner = true;
+                    statusLabel.textContent = `${winner} wins!`;
+                    saveSketchState();
+                    renderBoard();
+                    return;
+                }
+                if (!boardState.includes('')) {
+                    statusLabel.textContent = 'It\'s a draw!';
+                    saveSketchState();
+                    renderBoard();
+                    return;
+                }
+                currentTurn = currentTurn === 'X' ? 'O' : 'X';
+                renderBoard();
+                saveSketchState();
+            }
+
+            function clearSketchBoard() {
+                setupCanvasBackground();
+                saveSketchState();
+            }
+
+            function resetTicTacToe() {
+                boardState = ['', '', '', '', '', '', '', '', ''];
+                currentTurn = 'X';
+                hasWinner = false;
+                renderBoard();
+                saveSketchState();
+            }
+
+            function getCanvasPoint(event) {
+                const rect = sketchCanvas.getBoundingClientRect();
+                const scaleX = sketchCanvas.width / rect.width;
+                const scaleY = sketchCanvas.height / rect.height;
+                return {
+                    x: (event.clientX - rect.left) * scaleX,
+                    y: (event.clientY - rect.top) * scaleY
+                };
+            }
+
+            sketchCanvas.addEventListener('pointerdown', (event) => {
+                isDrawing = true;
+                lastPoint = getCanvasPoint(event);
+                ctx.beginPath();
+                ctx.moveTo(lastPoint.x, lastPoint.y);
+                ctx.lineWidth = Number(brushInput.value);
+                ctx.strokeStyle = colorInput.value;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            });
+
+            sketchCanvas.addEventListener('pointermove', (event) => {
+                if (!isDrawing) return;
+                const point = getCanvasPoint(event);
+                ctx.lineWidth = Number(brushInput.value);
+                ctx.strokeStyle = colorInput.value;
+                ctx.beginPath();
+                ctx.moveTo(lastPoint.x, lastPoint.y);
+                ctx.lineTo(point.x, point.y);
+                ctx.stroke();
+                lastPoint = point;
+            });
+
+            sketchCanvas.addEventListener('pointerup', () => {
+                if (!isDrawing) return;
+                isDrawing = false;
+                lastPoint = null;
+                saveSketchState();
+            });
+            sketchCanvas.addEventListener('pointerleave', () => {
+                if (isDrawing) {
+                    isDrawing = false;
+                    saveSketchState();
+                }
+            });
+
+            boardButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const index = Number(button.dataset.index);
+                    handleCellMove(index);
+                });
+            });
+
+            window.clearSketchBoard = clearSketchBoard;
+            window.resetTicTacToe = resetTicTacToe;
+
+            if (typeof BroadcastChannel !== 'undefined') {
+                window.sketchBoardChannel = new BroadcastChannel('sketch-pad-sync');
+                window.sketchBoardChannel.onmessage = (event) => {
+                    const incoming = event.data || {};
+                    if (incoming.canvasData) {
+                        applyCanvasState(incoming.canvasData);
+                    }
+                    if (Array.isArray(incoming.board) && incoming.board.length === 9) {
+                        boardState = incoming.board.slice();
+                        currentTurn = incoming.turn || 'X';
+                        hasWinner = !!incoming.winner;
+                    }
+                    renderBoard();
+                };
+            }
+
+            syncSketchStateFromStorage();
+            renderBoard();
         }
         function initBucketList() {
             const form = document.getElementById('bucketForm');
@@ -1654,39 +2243,56 @@
             activeForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 if (activeUploadBtn.disabled) return;
-                const file = document.getElementById('photoFile').files[0];
-                if (!file) return;
-                
-                activeUploadBtn.innerText = "Uploading to Cloud... ⏳";
+                const files = Array.from(document.getElementById('photoFile').files);
+                if (!files.length) return;
+
+                const photoTitle = document.getElementById('photoTitle').value.trim();
+                const folder = document.getElementById('photoFolder').value;
+
+                activeUploadBtn.innerText = files.length > 1 ? "Uploading photos... ⏳" : "Uploading to Cloud... ⏳";
                 activeUploadBtn.disabled = true;
-                
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${Date.now()}.${fileExt}`;
-                const filePath = `${fileName}`;
-                const { error: uploadError } = await supabaseClient.storage.from('memory_photos').upload(filePath, file);
-                if (uploadError) {
-                    alert("Error uploading file.");
-                    activeUploadBtn.innerText = "Upload Photo 📸";
-                    activeUploadBtn.disabled = false;
-                    return;
+
+                let uploadCount = 0;
+                let hadUploadError = false;
+
+                for (const file of files) {
+                    const fileExt = file.name.split('.').pop() || 'png';
+                    const fileName = `${Date.now()}-${Math.random().toString(16).slice(2)}.${fileExt}`;
+                    const { error: uploadError } = await supabaseClient.storage.from('memory_photos').upload(fileName, file);
+                    if (uploadError) {
+                        hadUploadError = true;
+                        continue;
+                    }
+
+                    const { data: publicURLData } = supabaseClient.storage.from('memory_photos').getPublicUrl(fileName);
+                    const imageUrl = publicURLData.publicUrl;
+                    const { error: dbError } = await supabaseClient.from('photo_memories').insert([{
+                        title: photoTitle || 'Untitled photo',
+                        folder,
+                        image_url: imageUrl
+                    }]);
+
+                    if (!dbError) {
+                        uploadCount += 1;
+                    } else {
+                        hadUploadError = true;
+                    }
                 }
-                const { data: publicURLData } = supabaseClient.storage.from('memory_photos').getPublicUrl(filePath);
-                const imageUrl = publicURLData.publicUrl;
-                const { error: dbError } = await supabaseClient.from('photo_memories').insert([{
-                    title: document.getElementById('photoTitle').value.trim(),
-                    folder: document.getElementById('photoFolder').value,
-                    image_url: imageUrl
-                }]);
+
                 activeUploadBtn.innerText = "Upload Photo 📸";
                 activeUploadBtn.disabled = false;
-                if (!dbError) {
-                    const photoTitle = document.getElementById('photoTitle').value.trim();
-                    const folder = document.getElementById('photoFolder').value;
+
+                if (uploadCount > 0) {
                     activeForm.reset();
                     fetchPhotos();
-                    sendAppNotification('New memory added 📸', `${photoTitle || 'A new photo'} was added to ${folder}.`);
-                } else {
-                    alert("Error saving metadata.");
+                    const summaryText = uploadCount === 1 ? `${photoTitle || 'A new photo'} was added to ${folder}.` : `${uploadCount} new photos were added to ${folder}.`;
+                    sendAppNotification('New memories added 📸', summaryText);
+                }
+
+                if (hadUploadError && uploadCount === 0) {
+                    alert("Error uploading one or more files.");
+                } else if (hadUploadError) {
+                    alert("Some files were uploaded, but one or more had an issue.");
                 }
             });
             window.fetchPhotosGlobal = fetchPhotos;
@@ -1777,16 +2383,17 @@
                 return;
             }
             filtered.forEach(p => {
+                const title = (p.title || '').trim() || 'Untitled photo';
                 const card = document.createElement('div');
                 card.className = 'photo-card';
                 card.innerHTML = `
                     <div class="photo-img-wrapper">
-                        <img src="${p.image_url}" alt="${escapeHTML(p.title)}" loading="lazy">
+                        <img src="${p.image_url}" alt="${escapeHTML(title)}" loading="lazy">
                     </div>
                     <div class="photo-info">
                         <div>
                             <span style="font-size: 0.7rem; color: var(--accent-pink); font-weight: 600; text-transform: uppercase;">${escapeHTML(p.folder)}</span>
-                            <h4 style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-main);">${escapeHTML(p.title)}</h4>
+                            <h4 style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-main);">${escapeHTML(title)}</h4>
                         </div>
                         <button class="btn btn-secondary delete-photo-btn" data-id="${p.id}" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-top: 0.5rem;">Delete Photo</button>
                     </div>
@@ -1802,16 +2409,17 @@
                 return;
             }
             deletedPhotos.forEach(p => {
+                const title = (p.title || '').trim() || 'Untitled photo';
                 const card = document.createElement('div');
                 card.className = 'photo-card';
                 card.innerHTML = `
                     <div class="photo-img-wrapper">
-                        <img src="${p.image_url}" alt="${escapeHTML(p.title)}" loading="lazy">
+                        <img src="${p.image_url}" alt="${escapeHTML(title)}" loading="lazy">
                     </div>
                     <div class="photo-info">
                         <div>
                             <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">${escapeHTML(p.folder)}</span>
-                            <h4 style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-main);">${escapeHTML(p.title)}</h4>
+                            <h4 style="font-size: 0.95rem; margin-top: 0.2rem; color: var(--text-main);">${escapeHTML(title)}</h4>
                         </div>
                         <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
                             <button class="btn restore-photo-btn" data-id="${p.id}" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; flex: 1;">Restore</button>
