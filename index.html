@@ -346,6 +346,7 @@
                 <li class="nav-item"><a href="#" class="nav-link" data-target="photos">📸 Photo Gallery</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="bucketlist">🎯 Bucket List</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="reasonsjar">🫙 Reasons Jar</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-target="suggestions">💡 Suggestions</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-target="settings">⚙️ Settings</a></li>
             </ul>
         </aside>
@@ -641,6 +642,28 @@
                     </form>
                 </div>
             </section>
+            
+            <section id="suggestions" class="section">
+                <div class="glass-card">
+                    <h2 class="hero-title" style="font-size: 2rem;">Suggestions & Ideas</h2>
+                    <p class="subtitle">Have an idea for a new feature, a surprise date, or an app improvement? Drop it here!</p>
+                    
+                    <form id="suggestionForm" style="margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--card-border);">
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Suggestion Title</label>
+                        <input type="text" id="suggestionTitleInput" placeholder="e.g., Add a mini quiz game..." required>
+                        
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin: 1rem 0 0.5rem 0;">Details / Description</label>
+                        <textarea id="suggestionDescInput" rows="3" placeholder="Explain your idea..." required></textarea>
+                        
+                        <button type="submit" id="addSuggestionBtn" class="btn" style="width: auto; margin-top: 1rem;">Submit Suggestion 💡</button>
+                    </form>
+                    
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Shared Suggestion Box</h3>
+                    <div class="grid-2" id="suggestionsContainer">
+                        <p style="color: var(--text-muted);">Loading suggestions...</p>
+                    </div>
+                </div>
+            </section>
             <section id="settings" class="section">
                 <div class="glass-card">
                     <h2 class="hero-title" style="font-size: 2rem;">Security & Settings</h2>
@@ -654,8 +677,20 @@
                             <input type="color" id="themeColorPicker" value="#ec4899" style="width: 60px; height: 40px; padding: 0; cursor: pointer; background: transparent; border: 1px solid var(--card-border); border-radius: 8px;">
                             <span style="color: var(--text-muted); font-size: 0.9rem;">Pick custom shade</span>
                         </div>
-                        <button class="btn" onclick="saveGlobalThemeColor()" style="width: auto;">Apply & Sync Theme 🎨</button>
+                        <button class="btn" onclick="saveGlobalThemeColor()" style="width: auto; margin-bottom: 1.5rem;">Apply & Sync Theme 🎨</button>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; border-top: 1px solid var(--card-border); padding-top: 1.5rem;">🍁 Seasonal Theme Presets</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Pick a vibe preset stored locally on your device.</p>
+                        <select id="seasonalThemeSelect" style="margin-bottom: 1rem;">
+                            <option value="default">🌌 Default Dark Minimal</option>
+                            <option value="spring">🌸 Spring Blossom (Soft Pink & Peach)</option>
+                            <option value="summer">☀️ Summer Sunset (Warm Amber & Gold)</option>
+                            <option value="autumn">🍂 Autumn Cozy (Warm Terracotta & Brown)</option>
+                            <option value="winter">❄️ Winter Frost (Cool Ice Blue & Silver)</option>
+                            <option value="cyber">⚡ Cyberpunk Neon (Electric Purple & Cyan)</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="applySelectedSeasonalTheme()" style="width: auto;">Set Seasonal Vibe ✨</button>
                     </div>
+                    
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; max-width: 500px; margin-bottom: 2rem;">
                         <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Change Your Passcode</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Update the secret PIN for <strong id="settingsUserLabel" style="color: var(--accent-pink);">...</strong></p>
@@ -697,6 +732,7 @@
         let bucketItems = [];
         let reasons = [];
         let notebookCheckins = [];
+        let suggestions = [];
         let currentNoteFilter = 'all';
         let currentPhotoFolder = 'all';
         let calendarNavDate = new Date();
@@ -704,6 +740,7 @@
         
         document.addEventListener('DOMContentLoaded', () => {
             fetchAndApplyGlobalTheme();
+            loadLocalSeasonalTheme();
             if (!currentUser) {
                 document.getElementById('loginOverlay').style.display = 'flex';
             } else {
@@ -761,6 +798,49 @@
             } else {
                 alert("Error saving theme colour.");
             }
+        }
+
+        function applySelectedSeasonalTheme() {
+            const themeKey = document.getElementById('seasonalThemeSelect').value;
+            localStorage.setItem('seasonalTheme', themeKey);
+            applySeasonalThemeStyles(themeKey);
+            alert("Seasonal theme applied successfully! 🌿❄️");
+        }
+        function loadLocalSeasonalTheme() {
+            const savedTheme = localStorage.getItem('seasonalTheme') || 'default';
+            const selectEl = document.getElementById('seasonalThemeSelect');
+            if (selectEl) selectEl.value = savedTheme;
+            applySeasonalThemeStyles(savedTheme);
+        }
+        function applySeasonalThemeStyles(theme) {
+            let bgColor = '#0b0f19';
+            let accentColor = '#ec4899';
+            let purpleColor = '#8b5cf6';
+            
+            if (theme === 'spring') {
+                bgColor = '#120f17';
+                accentColor = '#f472b6';
+                purpleColor = '#fb7185';
+            } else if (theme === 'summer') {
+                bgColor = '#14120b';
+                accentColor = '#f59e0b';
+                purpleColor = '#d97706';
+            } else if (theme === 'autumn') {
+                bgColor = '#130e0a';
+                accentColor = '#ea580c';
+                purpleColor = '#b45309';
+            } else if (theme === 'winter') {
+                bgColor = '#080e18';
+                accentColor = '#38bdf8';
+                purpleColor = '#818cf8';
+            } else if (theme === 'cyber') {
+                bgColor = '#050508';
+                accentColor = '#06b6d4';
+                purpleColor = '#a855f7';
+            }
+            document.documentElement.style.setProperty('--bg-color', bgColor);
+            document.documentElement.style.setProperty('--accent-pink', accentColor);
+            document.documentElement.style.setProperty('--accent-purple', purpleColor);
         }
         async function promptPasscode(name) {
             selectedTargetUser = name;
@@ -829,7 +909,6 @@
             document.getElementById('welcomeUserTitle').innerText = `Welcome Home, ${currentUser}! ❤️`;
             document.getElementById('settingsUserLabel').innerText = currentUser;
             
-            // Automatically set the Love Note direction and sender info based on who is logged in
             const noteDirectionDisplay = document.getElementById('noteDirectionDisplay');
             const noteTypeInput = document.getElementById('noteTypeInput');
             if (currentUser === 'Oliver') {
@@ -839,7 +918,6 @@
                 noteDirectionDisplay.innerHTML = `To: Oliver <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">(From Elin 💖)</span>`;
                 noteTypeInput.value = 'Elin to Oliver';
             }
-
             document.getElementById('eventAuthor').value = currentUser;
             initSupabaseNotes();
             initLockedLetters();
@@ -850,8 +928,74 @@
             initReasonsJar();
             initVibes();
             initNotebookCheckins();
+            initSuggestions();
         }
         
+        function initSuggestions() {
+            const form = document.getElementById('suggestionForm');
+            
+            async function fetchSuggestions() {
+                const { data, error } = await supabaseClient.from('app_suggestions').select('*').order('created_at', { ascending: false });
+                if (!error && data) {
+                    suggestions = data;
+                    renderSuggestions();
+                }
+            }
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            document.getElementById('suggestionForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('addSuggestionBtn');
+                if (btn.disabled) return;
+                btn.disabled = true;
+                btn.innerText = "Submitting... ⏳";
+                const { error } = await supabaseClient.from('app_suggestions').insert([{
+                    title: document.getElementById('suggestionTitleInput').value.trim(),
+                    description: document.getElementById('suggestionDescInput').value.trim(),
+                    author: currentUser
+                }]);
+                btn.disabled = false;
+                btn.innerText = "Submit Suggestion 💡";
+                if (!error) {
+                    document.getElementById('suggestionForm').reset();
+                    fetchSuggestions();
+                    alert("Suggestion submitted successfully! 💡✨");
+                } else {
+                    alert("Error saving suggestion.");
+                }
+            });
+            window.deleteSuggestion = async function(id) {
+                if (confirm("Delete this suggestion?")) {
+                    const { error } = await supabaseClient.from('app_suggestions').delete().eq('id', id);
+                    if (!error) fetchSuggestions();
+                }
+            };
+            fetchSuggestions();
+        }
+        function renderSuggestions() {
+            const container = document.getElementById('suggestionsContainer');
+            container.innerHTML = '';
+            if (suggestions.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted);">No suggestions added yet. Be the first to add one above!</p>`;
+                return;
+            }
+            suggestions.forEach(item => {
+                const card = document.createElement('div');
+                card.style.cssText = `background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 0.75rem;`;
+                card.innerHTML = `
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                            <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-pink);">Suggested by ${escapeHTML(item.author)}</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">${new Date(item.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.3rem;">${escapeHTML(item.title)}</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.4;">${escapeHTML(item.description)}</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="deleteSuggestion(${item.id})" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">Delete</button>
+                `;
+                container.appendChild(card);
+            });
+        }
         async function initNotebookCheckins() {
             await fetchNotebookCheckins();
         }
@@ -1780,7 +1924,7 @@
         function escapeHTML(str) {
             if (!str) return '';
             return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&', '<': '<', '>': '>', "'": "'", '"': '"'}[tag] || tag)
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)
             );
         }
     </script>
