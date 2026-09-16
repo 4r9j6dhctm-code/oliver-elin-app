@@ -358,9 +358,10 @@
                     
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
                         <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">📓 Daily Notebook Check-in</h3>
-                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Click once you've written in your notebook today! When both of you check in, a heart appears on the calendar for today.</p>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Choose any date to log notebook writing. When both of you check in for the same date, a heart appears on the shared calendar.</p>
                         <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                            <button class="btn" id="notebookCheckinBtn" onclick="toggleTodayNotebookCheckin()" style="width: auto;">Mark Today's Notebook Written ✍️</button>
+                            <input type="date" id="notebookCheckinDateInput" style="max-width: 180px; margin-bottom: 0;">
+                            <button class="btn" id="notebookCheckinBtn" onclick="toggleNotebookCheckinForSelectedDate()" style="width: auto;">Mark Selected Date ✍️</button>
                             <span id="notebookStatusText" style="font-size: 0.9rem; color: var(--text-muted);">Loading check-in status...</span>
                         </div>
                     </div>
@@ -692,6 +693,17 @@
                     </div>
                     
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; max-width: 500px; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">🔔 Mobile Notifications</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Get browser alerts on your phone or desktop when new notes, photos, or shared updates arrive.</p>
+                        <label style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-main); margin-bottom: 1rem; cursor: pointer;">
+                            <input type="checkbox" id="notificationsToggle" checked style="width: 18px; height: 18px; margin-bottom: 0;">
+                            <span>Enable notifications</span>
+                        </label>
+                        <button class="btn" onclick="requestNotificationAccess()" style="width: auto; margin-bottom: 0.5rem;">Enable Notifications 🔔</button>
+                        <button class="btn btn-secondary" onclick="sendTestNotification()" style="width: auto; margin-top: 0.5rem;">Send Test Notification 🧪</button>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; max-width: 500px; margin-bottom: 2rem;">
                         <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Change Your Passcode</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Update the secret PIN for <strong id="settingsUserLabel" style="color: var(--accent-pink);">...</strong></p>
                         
@@ -736,6 +748,8 @@
         let currentNoteFilter = 'all';
         let currentPhotoFolder = 'all';
         let calendarNavDate = new Date();
+        let calendarInitialized = false;
+        let notificationEnabled = localStorage.getItem('notificationEnabled') !== 'false';
         let nextMilestoneEvent = null;
         
         document.addEventListener('DOMContentLoaded', () => {
@@ -894,7 +908,80 @@
             localStorage.setItem('currentUser', name);
             document.getElementById('passcodeInput').value = '';
             document.getElementById('loginOverlay').style.display = 'none';
+            requestNotificationAccess();
             initAppSession();
+        }
+
+        function syncNotificationToggleUI() {
+            const toggle = document.getElementById('notificationsToggle');
+            if (!toggle) return;
+            toggle.checked = notificationEnabled;
+        }
+
+        async function requestNotificationAccess() {
+            if (!('Notification' in window)) {
+                notificationEnabled = false;
+                localStorage.setItem('notificationEnabled', 'false');
+                syncNotificationToggleUI();
+                console.log('This browser does not support notifications.');
+                return false;
+            }
+            if (!notificationEnabled) {
+                const toggle = document.getElementById('notificationsToggle');
+                if (toggle) toggle.checked = false;
+                localStorage.setItem('notificationEnabled', 'false');
+                syncNotificationToggleUI();
+                return false;
+            }
+
+            if (Notification.permission === 'granted') {
+                localStorage.setItem('notificationEnabled', 'true');
+                syncNotificationToggleUI();
+                return true;
+            }
+            if (Notification.permission === 'denied') {
+                notificationEnabled = false;
+                localStorage.setItem('notificationEnabled', 'false');
+                syncNotificationToggleUI();
+                console.log('Notifications are blocked for this browser.');
+                return false;
+            }
+
+            const permission = await Notification.requestPermission();
+            const granted = permission === 'granted';
+            notificationEnabled = granted;
+            localStorage.setItem('notificationEnabled', String(granted));
+            syncNotificationToggleUI();
+            return granted;
+        }
+
+        async function ensureNotificationPermission() {
+            return requestNotificationAccess();
+        }
+
+        function sendAppNotification(title, body) {
+            if (!notificationEnabled || !('Notification' in window) || Notification.permission !== 'granted') {
+                return;
+            }
+            try {
+                new Notification(title, {
+                    body: body,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="128" height="128" rx="24" fill="%23ec4899"/><text x="64" y="76" font-size="70" text-anchor="middle">💖</text></svg>',
+                    tag: 'love-space-notice'
+                });
+            } catch (error) {
+                console.log('Notification failed:', error);
+            }
+        }
+
+        async function sendTestNotification() {
+            const allowed = await requestNotificationAccess();
+            if (!allowed) {
+                alert('Notifications are not enabled yet. Please allow notifications in the browser prompt.');
+                return;
+            }
+            sendAppNotification('Test notification 🧪', `Hey ${currentUser || 'love bug'} — your notifications are working!`);
+            alert('Test notification sent. If you do not see it, the browser may still be blocking permission in the background.');
         }
         function logoutUser() {
             localStorage.removeItem('currentUser');
@@ -919,6 +1006,25 @@
                 noteTypeInput.value = 'Elin to Oliver';
             }
             document.getElementById('eventAuthor').value = currentUser;
+            const notebookDateInput = document.getElementById('notebookCheckinDateInput');
+            if (notebookDateInput) {
+                notebookDateInput.value = new Date().toISOString().split('T')[0];
+                notebookDateInput.addEventListener('change', updateNotebookUI);
+            }
+            const notificationsToggle = document.getElementById('notificationsToggle');
+            if (notificationsToggle) {
+                notificationsToggle.checked = notificationEnabled;
+                notificationsToggle.addEventListener('change', async (e) => {
+                    notificationEnabled = e.target.checked;
+                    localStorage.setItem('notificationEnabled', String(notificationEnabled));
+                    if (notificationEnabled) {
+                        await requestNotificationAccess();
+                    } else {
+                        syncNotificationToggleUI();
+                    }
+                });
+            }
+            syncNotificationToggleUI();
             initSupabaseNotes();
             initLockedLetters();
             initSupabaseCalendar();
@@ -996,6 +1102,16 @@
                 container.appendChild(card);
             });
         }
+        function getSelectedNotebookDate() {
+            const dateInput = document.getElementById('notebookCheckinDateInput');
+            if (!dateInput || !dateInput.value) {
+                const today = new Date().toISOString().split('T')[0];
+                if (dateInput) dateInput.value = today;
+                return today;
+            }
+            return dateInput.value;
+        }
+
         async function initNotebookCheckins() {
             await fetchNotebookCheckins();
         }
@@ -1009,45 +1125,54 @@
                 }
             }
         }
-        async function toggleTodayNotebookCheckin() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const existing = notebookCheckins.find(c => c.name === currentUser && c.checkin_date === todayStr);
+        function maybeSendNotebookNotification(dateString) {
+            const oliverChecked = notebookCheckins.some(c => c.name === 'Oliver' && c.checkin_date === dateString);
+            const elinChecked = notebookCheckins.some(c => c.name === 'Elin' && c.checkin_date === dateString);
+
+            if (oliverChecked && elinChecked) {
+                sendAppNotification('Shared notebook heart unlocked! 💖', `Both of you wrote in your notebooks for ${dateString}. The calendar has been updated.`);
+            }
+        }
+        async function toggleNotebookCheckinForSelectedDate() {
+            const selectedDate = getSelectedNotebookDate();
+            const existing = notebookCheckins.find(c => c.name === currentUser && c.checkin_date === selectedDate);
             
             if (existing) {
                 const { error } = await supabaseClient.from('notebook_checkins').delete().eq('id', existing.id);
                 if (!error) {
-                    alert("Notebook check-in undone for today.");
+                    alert(`Notebook check-in removed for ${selectedDate}.`);
                     fetchNotebookCheckins();
                 }
             } else {
-                const { error } = await supabaseClient.from('notebook_checkins').insert([{ name: currentUser, checkin_date: todayStr }]);
+                const { error } = await supabaseClient.from('notebook_checkins').insert([{ name: currentUser, checkin_date: selectedDate }]);
                 if (!error) {
-                    alert("Awesome! Marked today's notebook entry as written ✍️💖");
-                    fetchNotebookCheckins();
+                    alert(`Awesome! Marked ${selectedDate} as written ✍️💖`);
+                    await fetchNotebookCheckins();
+                    maybeSendNotebookNotification(selectedDate);
                 } else {
                     alert("Error recording notebook check-in.");
                 }
             }
         }
         function updateNotebookUI() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const myCheckin = notebookCheckins.find(c => c.name === currentUser && c.checkin_date === todayStr);
-            const oliverChecked = notebookCheckins.some(c => c.name === 'Oliver' && c.checkin_date === todayStr);
-            const elinChecked = notebookCheckins.some(c => c.name === 'Elin' && c.checkin_date === todayStr);
+            const selectedDate = getSelectedNotebookDate();
+            const myCheckin = notebookCheckins.find(c => c.name === currentUser && c.checkin_date === selectedDate);
+            const oliverChecked = notebookCheckins.some(c => c.name === 'Oliver' && c.checkin_date === selectedDate);
+            const elinChecked = notebookCheckins.some(c => c.name === 'Elin' && c.checkin_date === selectedDate);
             
             const btn = document.getElementById('notebookCheckinBtn');
             const statusText = document.getElementById('notebookStatusText');
             
             if (myCheckin) {
-                btn.innerText = "Undo Today's Check-in ✓";
+                btn.innerText = `Undo ${selectedDate} ✓`;
                 btn.className = "btn btn-secondary";
             } else {
-                btn.innerText = "Mark Today's Notebook Written ✍️";
+                btn.innerText = `Mark ${selectedDate} Written ✍️`;
                 btn.className = "btn";
             }
-            let statusString = `Oliver: ${oliverChecked ? '✅ Written 💙' : '❌ Not yet'} | Elin: ${elinChecked ? '✅ Written 💖' : '❌ Not yet'}`;
+            let statusString = `Oliver: ${oliverChecked ? '✅ Written 💙' : '❌ Not yet'} | Elin: ${elinChecked ? '✅ Written 💖' : '❌ Not yet'} (${selectedDate})`;
             if (oliverChecked && elinChecked) {
-                statusString += " — 🎉 Both wrote today! Heart active on calendar.";
+                statusString += " — 🎉 Both wrote this day! Heart active on calendar.";
             }
             statusText.innerText = statusString;
         }
@@ -1270,6 +1395,7 @@
                 if (!error) {
                     document.getElementById('lockedLetterForm').reset();
                     fetchLockedLetters();
+                    sendAppNotification('Locked letter sealed 🔒', `${currentUser} just sent a locked letter to ${recipient}.`);
                     alert("Letter successfully sealed in the vault! 🔐");
                 } else {
                     alert("Error sealing letter.");
@@ -1554,8 +1680,11 @@
                 activeUploadBtn.innerText = "Upload Photo 📸";
                 activeUploadBtn.disabled = false;
                 if (!dbError) {
+                    const photoTitle = document.getElementById('photoTitle').value.trim();
+                    const folder = document.getElementById('photoFolder').value;
                     activeForm.reset();
                     fetchPhotos();
+                    sendAppNotification('New memory added 📸', `${photoTitle || 'A new photo'} was added to ${folder}.`);
                 } else {
                     alert("Error saving metadata.");
                 }
@@ -1804,7 +1933,8 @@
                     } else {
                         document.getElementById('noteTypeInput').value = 'Elin to Oliver';
                     }
-                    fetchNotes(); 
+                    fetchNotes();
+                    sendAppNotification('Love note sent 💌', `${currentUser} just sent a love note.`);
                 }
             });
             window.deleteNote = async function(id) {
@@ -1816,14 +1946,26 @@
             fetchNotes();
         }
         function initSupabaseCalendar() {
+            if (calendarInitialized) {
+                return;
+            }
+            calendarInitialized = true;
+
             const form = document.getElementById('eventForm');
             const prevMonthBtn = document.getElementById('prevMonthBtn');
             const nextMonthBtn = document.getElementById('nextMonthBtn');
             const monthYearLabel = document.getElementById('currentMonthYearLabel');
             const daysGrid = document.getElementById('calendarDaysGrid');
             
-            prevMonthBtn.addEventListener('click', () => { calendarNavDate.setMonth(calendarNavDate.getMonth() - 1); renderCalendar(); });
-            nextMonthBtn.addEventListener('click', () => { calendarNavDate.setMonth(calendarNavDate.getMonth() + 1); renderCalendar(); });
+            function changeCalendarMonth(delta) {
+                const currentYear = calendarNavDate.getFullYear();
+                const currentMonth = calendarNavDate.getMonth();
+                calendarNavDate = new Date(currentYear, currentMonth + delta, 1);
+                renderCalendar();
+            }
+
+            prevMonthBtn.addEventListener('click', () => changeCalendarMonth(-1));
+            nextMonthBtn.addEventListener('click', () => changeCalendarMonth(1));
             
             async function fetchEvents() {
                 const { data, error } = await supabaseClient.from('calendar_events').select('*').order('event_date', { ascending: true });
@@ -1855,9 +1997,12 @@
                 activeBtn.disabled = false;
                 activeBtn.innerText = "Add Event to Calendar 📅";
                 if (!error) {
+                    const title = document.getElementById('eventTitle').value.trim();
+                    const date = document.getElementById('eventDate').value;
                     document.getElementById('eventForm').reset();
                     document.getElementById('eventAuthor').value = currentUser;
                     fetchEvents();
+                    sendAppNotification('Calendar updated 📅', `${currentUser} added "${title}" for ${date}.`);
                 }
             });
             window.deleteEvent = async function(id) {
