@@ -398,6 +398,82 @@
             gap: 4px;
             text-shadow: 0 1px 2px rgba(0,0,0,0.4);
         }
+        .decision-panel {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .decision-wheel-wrap {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+        }
+        .decision-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 8px solid rgba(255,255,255,0.18);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.35), 0 0 30px rgba(236, 72, 153, 0.25), inset 0 0 20px rgba(255,255,255,0.12);
+            background:
+                radial-gradient(circle at center, rgba(255,255,255,0.18), rgba(255,255,255,0) 42%),
+                conic-gradient(from 0deg, rgba(255, 118, 179, 0.96) 0 50%, rgba(120, 92, 255, 0.96) 50% 100%);
+            transition: transform 4.8s cubic-bezier(0.12, 0.74, 0.2, 1);
+        }
+        .decision-wheel::before {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border-radius: 50%;
+            background: rgba(11, 15, 25, 0.22);
+            border: 1px solid rgba(255,255,255,0.14);
+            box-shadow: inset 0 0 24px rgba(255,255,255,0.06);
+        }
+        .wheel-label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.92rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+            letter-spacing: 0.04em;
+        }
+        .wheel-label.oliver { transform: rotate(45deg) translateY(-64px) rotate(-45deg); }
+        .wheel-label.elin { transform: rotate(225deg) translateY(-64px) rotate(-225deg); }
+        .decision-pointer {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-top: 25px solid #f9fafb;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+            z-index: 2;
+        }
+        .decision-center {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            transform: translate(-50%, -50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(11,15,25,0.8);
+            border: 2px solid rgba(255,255,255,0.2);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
         @media (max-width: 768px) {
             aside { transform: translateX(-100%); }
             aside.open { transform: translateX(0); }
@@ -506,6 +582,41 @@
                         <p style="color: var(--text-muted); font-size: 0.95rem;" id="distanceDisplay">Connecting to automatic live location tracking...</p>
                         <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-top: 0.75rem;">
                             <span style="width: 7px; height: 7px; background: #34d399; border-radius: 50%; display: inline-block;"></span> Live Background Tracking Active 📍
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">📱 Partner Snapshot</h3>
+                        <div id="partnerStatusCard" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.9rem; color: var(--text-main);">
+                            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 0.9rem; border-radius: 10px;">
+                                <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.35rem;">Battery</div>
+                                <div id="partnerBatteryValue" style="font-size: 1.15rem; font-weight: 700;">Checking...</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 0.9rem; border-radius: 10px;">
+                                <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.35rem;">Weather</div>
+                                <div id="partnerWeatherValue" style="font-size: 1.05rem; font-weight: 700;">Checking...</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 0.9rem; border-radius: 10px; grid-column: span 2;">
+                                <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.35rem;">Last login</div>
+                                <div id="partnerLastLoginValue" style="font-size: 0.95rem; color: var(--text-muted);">Checking...</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">🎡 Decision Maker</h3>
+                        <div class="decision-panel">
+                            <div class="decision-wheel-wrap">
+                                <div class="decision-pointer"></div>
+                                <div class="decision-wheel" id="decisionWheel">
+                                    <div class="wheel-label oliver">Oliver</div>
+                                    <div class="wheel-label elin">Elin</div>
+                                </div>
+                                <div class="decision-center">💖</div>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">Spin the wheel to decide who wins the next tiny challenge, snack run, or cute dare.</p>
+                                <button class="btn" id="spinDecisionBtn" style="width: auto; margin-bottom: 1rem;">Spin the Wheel 🎡</button>
+                                <div id="decisionResultText" style="font-size: 1.1rem; font-weight: 700; color: var(--accent-pink);">Ready when you are ✨</div>
+                            </div>
                         </div>
                     </div>
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
@@ -1100,6 +1211,7 @@
             document.getElementById('passcodeInput').value = '';
             document.getElementById('loginOverlay').style.display = 'none';
             requestNotificationAccess();
+            syncCurrentUserPresence();
             initAppSession();
         }
 
@@ -1107,6 +1219,126 @@
             const toggle = document.getElementById('notificationsToggle');
             if (!toggle) return;
             toggle.checked = notificationEnabled;
+        }
+
+        function getPartnerName() {
+            return currentUser === 'Oliver' ? 'Elin' : 'Oliver';
+        }
+
+        function getWeatherCodeLabel(code) {
+            const weatherMap = {
+                0: 'Clear', 1: 'Mostly clear', 2: 'Partly cloudy', 3: 'Cloudy',
+                45: 'Foggy', 48: 'Heavy fog', 51: 'Light drizzle', 53: 'Drizzle',
+                55: 'Heavy drizzle', 56: 'Freezing drizzle', 57: 'Freezing rain',
+                61: 'Light rain', 63: 'Rain', 65: 'Heavy rain', 66: 'Freezing rain',
+                67: 'Heavy freezing rain', 71: 'Light snow', 73: 'Snow', 75: 'Heavy snow',
+                77: 'Snow grains', 80: 'Rain showers', 81: 'Heavy showers', 82: 'Very heavy showers',
+                85: 'Light snow showers', 86: 'Heavy snow showers', 95: 'Thunderstorm',
+                96: 'Thunderstorm + hail', 99: 'Severe thunderstorm'
+            };
+            return weatherMap[code] || 'Conditions';
+        }
+
+        async function syncCurrentUserPresence() {
+            const now = new Date().toISOString();
+            let batteryPercent = null;
+            try {
+                if (navigator.getBattery) {
+                    const battery = await navigator.getBattery();
+                    batteryPercent = Math.round(battery.level * 100);
+                }
+            } catch (error) {
+                console.log('Battery status unavailable:', error);
+            }
+            try {
+                await supabaseClient.from('user_profiles').upsert({
+                    name: currentUser,
+                    last_login: now,
+                    battery_level: batteryPercent
+                }, { onConflict: 'name' });
+            } catch (error) {
+                console.log('Presence sync unavailable:', error);
+            }
+        }
+
+        async function refreshPartnerStatusCard() {
+            if (!currentUser) return;
+            const partnerName = getPartnerName();
+            const batteryEl = document.getElementById('partnerBatteryValue');
+            const weatherEl = document.getElementById('partnerWeatherValue');
+            const loginEl = document.getElementById('partnerLastLoginValue');
+            if (!batteryEl || !weatherEl || !loginEl) return;
+
+            let partnerBattery = 'Unknown';
+            let partnerLogin = 'No recent login';
+            let partnerWeather = 'Location unavailable';
+
+            try {
+                const { data: profileData, error: profileError } = await supabaseClient
+                    .from('user_profiles')
+                    .select('last_login, battery_level')
+                    .eq('name', partnerName)
+                    .maybeSingle();
+
+                if (!profileError && profileData) {
+                    if (profileData.battery_level !== null && profileData.battery_level !== undefined) {
+                        partnerBattery = `${profileData.battery_level}%`;
+                    }
+                    if (profileData.last_login) {
+                        const parsed = new Date(profileData.last_login);
+                        partnerLogin = `Last active: ${parsed.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}`;
+                    }
+                }
+            } catch (error) {
+                console.log('Partner profile fetch failed:', error);
+            }
+
+            try {
+                const { data: locationData, error: locError } = await supabaseClient
+                    .from('user_locations')
+                    .select('latitude, longitude')
+                    .eq('name', partnerName)
+                    .maybeSingle();
+
+                if (!locError && locationData && locationData.latitude != null && locationData.longitude != null) {
+                    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${locationData.latitude}&longitude=${locationData.longitude}&current=temperature_2m,weather_code&timezone=auto`;
+                    const weatherRes = await fetch(weatherUrl);
+                    if (weatherRes.ok) {
+                        const weatherData = await weatherRes.json();
+                        const current = weatherData.current;
+                        const temp = current && current.temperature_2m != null ? `${Math.round(current.temperature_2m)}°C` : 'N/A';
+                        const code = current && current.weather_code != null ? getWeatherCodeLabel(current.weather_code) : 'Conditions';
+                        partnerWeather = `${temp} • ${code}`;
+                    }
+                }
+            } catch (error) {
+                console.log('Partner weather fetch failed:', error);
+            }
+
+            batteryEl.innerText = partnerBattery;
+            weatherEl.innerText = partnerWeather;
+            loginEl.innerText = partnerLogin;
+        }
+
+        let currentDecisionRotation = 0;
+
+        function spinDecisionWheel() {
+            const wheel = document.getElementById('decisionWheel');
+            const resultText = document.getElementById('decisionResultText');
+            if (!wheel || !resultText) return;
+
+            const winner = Math.random() < 0.5 ? 'Oliver' : 'Elin';
+            const normalized = currentDecisionRotation % 360;
+            const targetMap = {
+                Oliver: 360 - normalized + 90,
+                Elin: 360 - normalized + 270
+            };
+            const totalSpins = 6 * 360;
+            const targetRotation = currentDecisionRotation + totalSpins + targetMap[winner];
+            currentDecisionRotation = targetRotation;
+
+            wheel.style.transform = `rotate(${targetRotation}deg)`;
+            resultText.innerText = winner === 'Oliver' ? 'Oliver wins this round 💙' : 'Elin wins this round 💖';
         }
 
         async function requestNotificationAccess() {
@@ -1227,6 +1459,14 @@
             initReasonsJar();
             initVibes();
             initNotebookCheckins();
+            syncCurrentUserPresence();
+            refreshPartnerStatusCard();
+            setInterval(refreshPartnerStatusCard, 30000);
+
+            const spinButton = document.getElementById('spinDecisionBtn');
+            if (spinButton) {
+                spinButton.addEventListener('click', spinDecisionWheel);
+            }
         }
         function getSelectedNotebookDate() {
             const dateInput = document.getElementById('notebookCheckinDateInput');
